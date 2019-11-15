@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "outDir": "build",
+    "noImplicitAny": true,
+    "strict": true
+  }
+}

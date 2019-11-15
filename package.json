@@ -1,0 +1,18 @@
+{
+  "scripts": {
+    "start": "tsc && run-p -r watch electron",
+    "watch": "tsc -w",
+    "electron": "electron ./build/main.js"
+  },
+  "dependencies": {
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0"
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.11",
+    "@types/react-dom": "^16.9.4",
+    "electron-nightly": "^8.0.0-nightly.20191105",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^3.7.2"
+  }
+}
