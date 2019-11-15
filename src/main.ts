@@ -1,5 +1,7 @@
 import {app, BrowserWindow} from "electron";
 
+require("electron-reload")(__dirname);
+
 let mainWindow: BrowserWindow | null;
 
 function createWindow() {
