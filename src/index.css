@@ -1,0 +1,14 @@
+body {
+  margin: 0;
+  background: #222;
+}
+
+.titlebar {
+  border-bottom: 1px solid #333;
+}
+
+.titlebar-light .titlebar-minimize:hover,
+.titlebar-light .titlebar-resize:hover,
+.titlebar-light .titlebar-fullscreen:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}

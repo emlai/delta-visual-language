@@ -8,13 +8,13 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1280,
     height: 720,
+    frame: false,
     webPreferences: {
       nodeIntegration: true
     }
   });
 
   mainWindow.loadFile("../index.html");
-  mainWindow.webContents.openDevTools();
 
   mainWindow.on("closed", function () {
     mainWindow = null;
