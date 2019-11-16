@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   background: #111;
@@ -7,6 +11,7 @@ body {
 }
 
 input {
+  width: 100%;
   background: #111;
   color: inherit;
   border: none;
@@ -33,6 +38,7 @@ input {
 
 .Block {
   display: inline-block;
+  width: 200px;
   background: #222;
   padding: 10px;
   border-radius: 2px;
