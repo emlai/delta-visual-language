@@ -27,9 +27,16 @@ input {
   border-bottom: none !important;
 }
 
-.editableArea {
+.Editor {
   display: flex;
+  flex-direction: column;
   height: -webkit-fill-available;
+}
+
+.editableArea {
+  flex-grow: 1;
+  display: flex;
+  overflow: auto;
 }
 
 .Function {
@@ -55,7 +62,7 @@ input {
   display: inline-block;
   width: 200px;
   background: #222;
-  padding: 10px;
+  padding: 8px;
   border-radius: 2px;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 1);
 }
