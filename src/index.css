@@ -53,4 +53,13 @@ input {
 
 .completion {
   padding: 5px;
+  display: block;
+  color: inherit;
+  text-decoration: inherit;
+  outline: none;
+}
+
+.completion:hover,
+.completion:focus {
+  background: #333;
 }

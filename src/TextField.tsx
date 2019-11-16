@@ -10,13 +10,13 @@ export function TextField(props: Props) {
   return <div className="TextField">
     <input
       value={props.value.get()}
-      onChange={event => props.value.set(event.target.value)}
+      onChange={event => props.value.set(event.target.value.trimLeft())}
     />
     <div className="completions">
       {props.value.get() && props.completions?.filter(c => c.includes(props.value.get())).map(c =>
-        <div className="completion">
+        <a href="#" className="completion" onClick={() => props.value.set(c)}>
           {c}
-        </div>
+        </a>
       )}
     </div>
   </div>;
