@@ -1,6 +1,6 @@
 import {app, BrowserWindow} from "electron";
 
-require("electron-reload")(__dirname);
+require("electron-reload")([__dirname, __dirname + "/../src/*.css"]);
 
 let mainWindow: BrowserWindow | null;
 
