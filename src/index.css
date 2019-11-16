@@ -38,3 +38,19 @@ input {
   border-radius: 2px;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 1);
 }
+
+.TextField {
+  position: relative;
+}
+
+.completions {
+  position: absolute;
+  width: 100%;
+  background: #222;
+  border-radius: 2px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 1);
+}
+
+.completion {
+  padding: 5px;
+}

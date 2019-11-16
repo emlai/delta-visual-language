@@ -4,8 +4,9 @@ import {useState} from "./hooks";
 
 export function Block() {
   const value = useState("");
+  const completions = ["prompt", "print"];
 
   return <div className="Block">
-    <TextField value={value}/>
+    <TextField value={value} completions={completions}/>
   </div>;
 }
