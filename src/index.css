@@ -31,6 +31,7 @@ input {
   display: flex;
   flex-direction: column;
   padding: 20px;
+  height: -webkit-fill-available;
 }
 
 .RunButton {
@@ -64,14 +65,13 @@ input {
 
 .Menu {
   position: absolute;
-  width: 100%;
   background: #222;
   border-radius: 2px;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 1);
 }
 
 .MenuItem {
-  padding: 5px;
+  padding: 5px 15px;
   display: block;
   color: inherit;
   text-decoration: inherit;
