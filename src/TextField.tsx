@@ -9,15 +9,18 @@ type Props<T> = {
 }
 
 export function TextField<T extends string>(props: Props<T>) {
+  const completions = props.value.get() && props.completions
+    ?.filter(c => c.includes(props.value.get()))
+    .map(c => ({value: c, label: <code>{c}</code>})) || [];
+
   return <div className="TextField">
-    <input
-      value={props.value.get()}
-      onChange={event => props.value.set(event.target.value.trimLeft())}
-      autoFocus={true}
-    />
-    <Menu
-      items={props.value.get() && props.completions?.filter(c => c.includes(props.value.get())) || []}
-      select={props.select}
-    />
+    <code>
+      <input
+        value={props.value.get()}
+        onChange={event => props.value.set(event.target.value.trimLeft())}
+        autoFocus={true}
+      />
+    </code>
+    <Menu items={completions} select={props.select}/>
   </div>;
 }

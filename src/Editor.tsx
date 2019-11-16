@@ -50,7 +50,7 @@ export function Editor() {
     </div>
     {editorMenuPosition ?
       <Menu
-        items={["Add function"]}
+        items={[{value: "addFunction", label: "Add function"}]}
         select={addFunction}
         position={editorMenuPosition}
       /> : null}

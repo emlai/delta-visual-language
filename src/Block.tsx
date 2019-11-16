@@ -17,7 +17,7 @@ export function Block(props: Props) {
       case "empty":
         return <TextField value={value} completions={completions} select={type => props.setData({type})}/>;
       default:
-        return <>{props.data.type}</>;
+        return <code>{props.data.type}</code>;
     }
   }
 

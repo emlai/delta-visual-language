@@ -6,8 +6,12 @@ body {
   margin: 0;
   background: #111;
   color: #eee;
-  font-family: Consolas, monospace;
+  font-family: sans-serif;
   font-size: 12px;
+}
+
+code {
+  font-family: Consolas, monospace;
 }
 
 input {
@@ -62,7 +66,7 @@ input {
   display: inline-block;
   width: 200px;
   background: #222;
-  padding: 8px;
+  padding: 7px;
   border-radius: 2px;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 1);
 }
@@ -83,7 +87,7 @@ input {
 }
 
 .MenuItem {
-  padding: 5px 15px;
+  padding: 7px 12px;
   display: block;
   color: inherit;
   text-decoration: inherit;
