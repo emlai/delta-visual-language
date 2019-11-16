@@ -12,6 +12,7 @@ export function TextField<T extends string>(props: Props<T>) {
     <input
       value={props.value.get()}
       onChange={event => props.value.set(event.target.value.trimLeft())}
+      autoFocus={true}
     />
     <div className="completions">
       {props.value.get() && props.completions?.filter(c => c.includes(props.value.get())).map(c =>
