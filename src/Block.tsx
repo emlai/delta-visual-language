@@ -4,19 +4,25 @@ import {useState} from "./hooks";
 
 export type BlockType = "prompt" | "print" | "empty";
 
-export function Block() {
-  const type = useState<BlockType>("empty");
+export type BlockData = {
+  type: BlockType
+};
+
+type Props = {
+  data: BlockData,
+  setData: (data: BlockData) => void
+};
+
+export function Block(props: Props) {
   const value = useState("");
   const completions: Array<BlockType> = ["prompt", "print"];
 
   function BlockContent() {
-    switch (type.get()) {
+    switch (props.data.type) {
       case "empty":
-        return <TextField value={value} completions={completions} select={type.set}/>;
-      case "prompt":
-        return <>prompt</>;
+        return <TextField value={value} completions={completions} select={type => props.setData({type})}/>;
       default:
-        return <>{type.get()}</>;
+        return <>{props.data.type}</>;
     }
   }
 

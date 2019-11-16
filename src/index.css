@@ -33,6 +33,8 @@ input {
 }
 
 .Editor {
+  display: flex;
+  flex-direction: column;
   padding: 20px;
 }
 
@@ -42,7 +44,11 @@ input {
   background: #222;
   padding: 10px;
   border-radius: 2px;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 1);
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 1);
+}
+
+.Block + .Block {
+  margin-top: 5px;
 }
 
 .TextField {
