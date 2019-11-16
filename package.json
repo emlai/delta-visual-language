@@ -5,9 +5,8 @@
     "electron": "electron ./build/main.js"
   },
   "dependencies": {
-    "classnames": "^2.2.6",
     "electron-prompt": "^1.4.0",
-    "electron-react-titlebar": "^0.8.1",
+    "electron-react-titlebar": "^0.8.2",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-icons": "^3.8.0",

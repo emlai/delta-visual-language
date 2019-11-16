@@ -25,7 +25,7 @@ export function Editor() {
   }
 
   return <div className="Editor">
-    <TitleBar menu={[]}>
+    <TitleBar>
       <link rel="stylesheet" type="text/css" href={require.resolve("electron-react-titlebar/assets/style.css")}/>
       <div className="RunButton" onClick={() => interpret(blocks.get())}>
         <IoMdPlay/>
