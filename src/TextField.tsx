@@ -1,5 +1,6 @@
 import {Lens} from "./lens";
 import * as React from "react";
+import {Menu} from "./Menu";
 
 type Props<T> = {
   value: Lens<string>
@@ -14,12 +15,9 @@ export function TextField<T extends string>(props: Props<T>) {
       onChange={event => props.value.set(event.target.value.trimLeft())}
       autoFocus={true}
     />
-    <div className="completions">
-      {props.value.get() && props.completions?.filter(c => c.includes(props.value.get())).map(c =>
-        <a href="#" className="completion" onClick={() => props.select(c)} key={c}>
-          {c}
-        </a>
-      )}
-    </div>
+    <Menu
+      items={props.value.get() && props.completions?.filter(c => c.includes(props.value.get())) || []}
+      select={props.select}
+    />
   </div>;
 }

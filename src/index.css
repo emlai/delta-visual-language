@@ -62,7 +62,7 @@ input {
   position: relative;
 }
 
-.completions {
+.Menu {
   position: absolute;
   width: 100%;
   background: #222;
@@ -70,7 +70,7 @@ input {
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 1);
 }
 
-.completion {
+.MenuItem {
   padding: 5px;
   display: block;
   color: inherit;
@@ -78,7 +78,7 @@ input {
   outline: none;
 }
 
-.completion:hover,
-.completion:focus {
+.MenuItem:hover,
+.MenuItem:focus {
   background: #333;
 }
