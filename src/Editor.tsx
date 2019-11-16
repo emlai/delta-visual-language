@@ -2,19 +2,15 @@ import * as React from "react";
 import {IoMdPlay} from "react-icons/io";
 import {useKey} from "react-use";
 import {TitleBar} from "electron-react-titlebar";
-import {Block, BlockData} from "./Block";
-import {useState} from "./hooks";
-import {interpret} from "./interpreter";
-import {Position} from "./utils";
+import {Block} from "./Block";
+import {BlockData, Function, interpret} from "./interpreter";
+import {Position, replace} from "./utils";
 import {Menu} from "./Menu";
 
 export function Editor() {
   const [editorMenuPosition, setEditorMenuPosition] = React.useState<Position | null>(null);
+  const [fns, setFns] = React.useState<Function[]>([{name: "main", body: [{type: "empty"}]}]);
   useKey("Escape", () => setEditorMenuPosition(null));
-  const blocks = useState<Array<BlockData>>([{type: "empty"}]);
-  const setBlock = (index: number, data: BlockData) => {
-    blocks.set(Object.assign([], blocks.get().concat({type: "empty"}), {[index]: data}));
-  };
 
   function openEditorMenu(event: React.MouseEvent) {
     if (!editorMenuPosition && event.target === event.currentTarget) {
@@ -24,22 +20,38 @@ export function Editor() {
     }
   }
 
+  function addFunction() {
+    setEditorMenuPosition(null);
+    setFns(fns.concat({name: "", body: [{type: "empty"}]}));
+  }
+
   return <div className="Editor">
     <TitleBar>
       <link rel="stylesheet" type="text/css" href={require.resolve("electron-react-titlebar/assets/style.css")}/>
-      <div className="RunButton" onClick={() => interpret(blocks.get())}>
+      <div className="RunButton" onClick={() => interpret(fns.find(fn => fn.name === "main")!)}>
         <IoMdPlay/>
       </div>
     </TitleBar>
     <div className="editableArea" onClick={openEditorMenu}>
-      {blocks.get().map((block, index) =>
-        <Block data={block} setData={data => setBlock(index, data)} key={index}/>
-      )}
+      {fns.map((fn, index) => {
+        const setFn = (newFn: Function) => {
+          setFns(replace(fns, index, newFn));
+        };
+        return <div className="Function" key={index}>
+          {fn.body.map((block, index) => {
+            const setBlock = (newBlock: BlockData) => {
+              const body = fn.body.concat({type: "empty"});
+              setFn({...fn, body: replace(body, index, newBlock)});
+            };
+            return <Block data={block} setData={setBlock} key={index}/>;
+          })}
+        </div>;
+      })}
     </div>
     {editorMenuPosition ?
       <Menu
         items={["Add function"]}
-        select={(x) => console.log(x)}
+        select={addFunction}
         position={editorMenuPosition}
       /> : null}
   </div>;

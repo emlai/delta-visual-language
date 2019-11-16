@@ -1,9 +1,19 @@
 // @ts-ignore
 import * as prompt from "electron-prompt";
-import {BlockData} from "./Block";
 
-export async function interpret(program: Array<BlockData>) {
-  return program.reduce<any>(async (prev, curr) => {
+export type Function = {
+  name: string
+  body: BlockData[]
+}
+
+export type BlockType = "prompt" | "print" | "empty";
+
+export type BlockData = {
+  type: BlockType
+};
+
+export async function interpret(fn: Function) {
+  return fn.body.reduce<any>(async (prev, curr) => {
     switch (curr.type) {
       case "prompt":
         return prompt(await prev);

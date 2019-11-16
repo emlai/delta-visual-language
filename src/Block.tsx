@@ -1,12 +1,7 @@
 import * as React from "react";
 import {TextField} from "./TextField";
 import {useState} from "./hooks";
-
-export type BlockType = "prompt" | "print" | "empty";
-
-export type BlockData = {
-  type: BlockType
-};
+import {BlockData, BlockType} from "./interpreter";
 
 type Props = {
   data: BlockData,

@@ -29,9 +29,14 @@ input {
 
 .editableArea {
   display: flex;
-  flex-direction: column;
-  padding: 20px;
   height: -webkit-fill-available;
+}
+
+.Function {
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  margin: 20px;
 }
 
 .RunButton {
