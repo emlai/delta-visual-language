@@ -22,20 +22,27 @@ input {
   font-size: inherit;
 }
 
-.titlebar {
-  background: #222;
+.electron-app-title-bar {
+  background: #222 !important;
+  border-bottom: none !important;
 }
 
-.titlebar-light .titlebar-minimize:hover,
-.titlebar-light .titlebar-resize:hover,
-.titlebar-light .titlebar-fullscreen:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.Editor {
+.editableArea {
   display: flex;
   flex-direction: column;
   padding: 20px;
+}
+
+.RunButton {
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  -webkit-app-region: no-drag;
+}
+
+.RunButton:hover {
+  background: #444;
 }
 
 .Block {

@@ -1,4 +1,6 @@
 import * as React from "react";
+import {IoMdPlay} from "react-icons/io";
+import {TitleBar} from "electron-react-titlebar";
 import {Block, BlockData} from "./Block";
 import {useState} from "./hooks";
 
@@ -9,8 +11,20 @@ export function Editor() {
   };
 
   return <div className="Editor">
-    {blocks.get().map((block, index) =>
-      <Block data={block} setData={data => setBlock(index, data)} key={index}/>
-    )}
+    <TitleBar menu={[]}>
+      <link rel="stylesheet" type="text/css" href={require.resolve("electron-react-titlebar/assets/style.css")}/>
+      <RunButton/>
+    </TitleBar>
+    <div className="editableArea">
+      {blocks.get().map((block, index) =>
+        <Block data={block} setData={data => setBlock(index, data)} key={index}/>
+      )}
+    </div>
+  </div>;
+}
+
+function RunButton() {
+  return <div className="RunButton">
+    <IoMdPlay/>
   </div>;
 }
