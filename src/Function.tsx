@@ -1,29 +1,24 @@
 import * as React from "react";
 import {IoMdAdd} from "react-icons/io";
-import {BlockData, FunctionData} from "./interpreter";
-import {replace} from "./utils";
+import {FunctionData} from "./interpreter";
 import {Block} from "./Block";
 import {EditableLabel} from "./EditableLabel";
-import {lens, view} from "./lens";
+import {Lens, map, push, view} from "./lens";
 
 type Props = {
-  fn: FunctionData
-  setFn: (newFn: FunctionData) => void
+  fn: Lens<FunctionData>
 }
 
 export function Function(props: Props) {
-  const {fn, setFn} = props;
-  const addBlock = () => setFn({...fn, body: fn.body.concat({type: "empty"})});
+  const {fn} = props;
+  const addBlock = () => push(view("body", fn), {type: "empty"});
 
   return <div className="Function">
     <code className="FunctionName">
-      <EditableLabel value={view("name", lens(fn, setFn))}/>
+      <EditableLabel value={view("name", fn)}/>
     </code>
-    {fn.body.map((block, index) => {
-      const setBlock = (newBlock: BlockData) => {
-        setFn({...fn, body: replace(fn.body, index, newBlock)});
-      };
-      return <Block data={block} setData={setBlock} key={index}/>;
+    {map(view("body", fn), (block, index) => {
+      return <Block data={block} key={index}/>;
     })}
     <a href="#" className="Block AddBlockButton" onClick={addBlock}>
       <IoMdAdd/>

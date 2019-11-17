@@ -2,10 +2,10 @@ import * as React from "react";
 import {useState} from "./hooks";
 import {BlockData, BlockType} from "./interpreter";
 import {AutocompleteField} from "./AutocompleteField";
+import {Lens} from "./lens";
 
 type Props = {
-  data: BlockData,
-  setData: (data: BlockData) => void
+  data: Lens<BlockData>
 };
 
 export function Block(props: Props) {
@@ -13,15 +13,15 @@ export function Block(props: Props) {
   const completions: Array<BlockType> = ["prompt", "print"];
 
   function BlockContent() {
-    switch (props.data.type) {
+    switch (props.data.get().type) {
       case "empty":
         return <AutocompleteField
           value={value}
           completions={completions}
-          select={type => props.setData({type})}
+          select={type => props.data.set({type})}
         />;
       default:
-        return <code>{props.data.type}</code>;
+        return <code>{props.data.get().type}</code>;
     }
   }
 

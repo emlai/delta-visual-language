@@ -124,7 +124,7 @@ input {
   color: #555;
 }
 
-.AddBlockButton:not(:hover) {
+.AddBlockButton:not(:hover):not(:focus) {
   background: transparent;
   box-shadow: none;
 }

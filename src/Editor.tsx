@@ -7,6 +7,7 @@ import {FunctionData, interpret} from "./interpreter";
 import {Position, replace} from "./utils";
 import {Menu} from "./Menu";
 import {Function} from "./Function";
+import {lens} from "./lens";
 
 export function Editor() {
   const [editorMenuPosition, setEditorMenuPosition] = React.useState<Position | null>(null);
@@ -47,11 +48,7 @@ export function Editor() {
     }
     <div className="editableArea" onContextMenu={openEditorMenu} onClick={closeEditorMenu}>
       {fns.map((fn, index) =>
-        <Function
-          fn={fn}
-          setFn={newFn => setFns(replace(fns, index, newFn))}
-          key={index}
-        />
+        <Function fn={lens(fn, newFn => setFns(replace(fns, index, newFn)))} key={index}/>
       )}
     </div>
     {editorMenuPosition ?
