@@ -10,7 +10,7 @@ import {Function} from "./Function";
 
 export function Editor() {
   const [editorMenuPosition, setEditorMenuPosition] = React.useState<Position | null>(null);
-  const [fns, setFns] = React.useState<FunctionData[]>([{name: "main", body: [{type: "empty"}]}]);
+  const [fns, setFns] = React.useState<FunctionData[]>([{name: "main", body: []}]);
   useKey("Escape", closeEditorMenu);
 
   function openEditorMenu(event: React.MouseEvent) {
@@ -25,7 +25,7 @@ export function Editor() {
 
   function addFunction() {
     closeEditorMenu();
-    setFns(fns.concat({name: "", body: [{type: "empty"}]}));
+    setFns(fns.concat({name: "", body: []}));
   }
 
   function RunButton() {

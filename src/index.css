@@ -61,6 +61,7 @@ input {
 .Function {
   display: flex;
   flex-direction: column;
+  width: 200px;
   height: fit-content;
   margin: 20px;
 }
@@ -84,7 +85,6 @@ input {
 
 .Block {
   display: inline-block;
-  width: 200px;
   background: #222;
   padding: 7px;
   border-radius: 2px;
@@ -117,4 +117,14 @@ input {
 .MenuItem:hover,
 .MenuItem:focus {
   background: #333;
+}
+
+.AddBlockButton {
+  line-height: 0;
+  color: #555;
+}
+
+.AddBlockButton:not(:hover) {
+  background: transparent;
+  box-shadow: none;
 }
