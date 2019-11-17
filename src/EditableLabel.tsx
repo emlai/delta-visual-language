@@ -12,7 +12,7 @@ export function EditableLabel(props: Props) {
 
   const onChange = (value: string) => {
     props.value.set(value);
-    setEditing(false);
+    setEditing(!value);
   };
 
   if (editing) {
