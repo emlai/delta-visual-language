@@ -1,7 +1,7 @@
 // @ts-ignore
 import * as prompt from "electron-prompt";
 
-export type Function = {
+export type FunctionData = {
   name: string
   body: BlockData[]
 }
@@ -12,7 +12,7 @@ export type BlockData = {
   type: BlockType
 };
 
-export async function interpret(fn: Function) {
+export async function interpret(fn: FunctionData) {
   return fn.body.reduce<any>(async (prev, curr) => {
     switch (curr.type) {
       case "prompt":

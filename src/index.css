@@ -50,6 +50,11 @@ input {
   margin: 20px;
 }
 
+.FunctionName {
+  padding: 7px;
+  text-align: center;
+}
+
 .RunButton {
   color: white;
   display: flex;
