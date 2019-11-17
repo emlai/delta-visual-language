@@ -11,7 +11,7 @@ export function replace<T>(array: T[], index: number, element: T): T[] {
 
 let id = 0;
 
-export function createFn(name: string): FunctionData {
+export function createFunc(name: string): FunctionData {
   id++;
   return {id, name, body: []};
 }

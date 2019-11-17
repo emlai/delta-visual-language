@@ -6,18 +6,18 @@ import {lens, Lens} from "./lens";
 
 type Props = {
   data: Lens<BlockData>
-  fns: FunctionData[]
+  funcs: FunctionData[]
 };
 
 export function Block(props: Props) {
   const value = lens(useState(""));
-  const completions = props.fns.map(fn => fn.name);
+  const completions = props.funcs.map(func => func.name);
   const block = props.data.get();
 
   const select = (name: string) => {
-    const fn = props.fns.find(fn => fn.name === name);
-    if (!fn) throw Error(`Function name "${name}" not found`);
-    props.data.set({type: "call", fnId: fn.id});
+    const func = props.funcs.find(func => func.name === name);
+    if (!func) throw Error(`Function name "${name}" not found`);
+    props.data.set({type: "call", funcId: func.id});
   };
 
   function BlockContent() {
@@ -29,9 +29,9 @@ export function Block(props: Props) {
           select={select}
         />;
       default:
-        const fn = props.fns.find(f => f.id === block.fnId);
-        if (!fn) throw Error(`Function ID "${block.fnId}" not found`);
-        return <code>{fn.name}</code>;
+        const func = props.funcs.find(f => f.id === block.funcId);
+        if (!func) throw Error(`Function ID "${block.funcId}" not found`);
+        return <code>{func.name}</code>;
     }
   }
 

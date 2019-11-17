@@ -9,22 +9,22 @@ export type FunctionData = {
 
 export type BlockData =
   | {type: "empty"}
-  | {type: "call", fnId: number}
+  | {type: "call", funcId: number}
 
-export async function interpret(fns: FunctionData[], fn: FunctionData, arg?: unknown): Promise<unknown> {
-  return fn.body.reduce<unknown>(async (prev, curr) => {
+export async function interpret(funcs: FunctionData[], func: FunctionData, arg?: unknown): Promise<unknown> {
+  return func.body.reduce<unknown>(async (prev, curr) => {
     switch (curr.type) {
       case "call":
-        const fn = fns.find(f => f.id === curr.fnId);
-        if (!fn) throw Error(`Function ID "${curr.fnId}" not found`);
+        const func = funcs.find(f => f.id === curr.funcId);
+        if (!func) throw Error(`Function ID "${curr.funcId}" not found`);
 
-        switch (fn.name) {
+        switch (func.name) {
           case "prompt":
             return prompt(await prev);
           case "print":
             return alert(await prev);
           default:
-            return interpret(fns, fn, await prev);
+            return interpret(funcs, func, await prev);
         }
     }
   }, arg);
