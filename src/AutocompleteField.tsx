@@ -9,7 +9,7 @@ type Props<T> = {
 }
 
 export function AutocompleteField<T extends string>(props: Props<T>) {
-  const completions = props.value.get() && props.completions
+  const completions = props.completions
     ?.filter(c => c.includes(props.value.get()))
     .map(c => ({value: c, label: <code>{c}</code>})) || [];
 
