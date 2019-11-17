@@ -4,7 +4,7 @@ import {IoMdPlay} from "react-icons/io";
 import {useKey} from "react-use";
 import * as is from "electron-is";
 import {TitleBar as WindowsTitleBar} from "electron-react-titlebar";
-import {FunctionData, interpret} from "./interpreter";
+import {interpret} from "./interpreter";
 import {createFunc, Position} from "./utils";
 import {Menu} from "./Menu";
 import {Function} from "./Function";
@@ -16,7 +16,7 @@ const print = createFunc("print");
 
 export function Editor() {
   const [editorMenuPosition, setEditorMenuPosition] = React.useState<Position | null>(null);
-  const funcs = lens(useState<FunctionData[]>([main]));
+  const funcs = lens(useState([main]));
   const builtinFuncs = [prompt, print];
   const allFuncs = funcs.current.concat(builtinFuncs);
   useKey("Escape", closeEditorMenu);
@@ -37,31 +37,43 @@ export function Editor() {
   }
 
   function RunButton() {
-    return <div className="RunButton" onClick={() => interpret(allFuncs, funcs.current.find(func => func.name === "main")!.body)}>
-      <IoMdPlay/>
-    </div>;
+    const run = () => {
+      const main = funcs.current.find(func => func.name === "main")!;
+      return interpret(allFuncs, main.body);
+    };
+    return (
+      <div className="RunButton" onClick={run}>
+        <IoMdPlay />
+      </div>
+    );
   }
 
-  return <div className="Editor">
-    {is.windows() ?
-      <WindowsTitleBar>
-        <link rel="stylesheet" type="text/css" href={require.resolve("electron-react-titlebar/assets/style.css")}/>
-        <RunButton/>
-      </WindowsTitleBar>
-      :
-      <div className="electron-app-title-bar non-windows">
-        <RunButton/>
+  return (
+    <div className="Editor">
+      {is.windows() ? (
+        <WindowsTitleBar>
+          <link rel="stylesheet" type="text/css" href={require.resolve("electron-react-titlebar/assets/style.css")} />
+          <RunButton />
+        </WindowsTitleBar>
+      ) : (
+        <div className="electron-app-title-bar non-windows">
+          <RunButton />
+        </div>
+      )}
+
+      <div className="editableArea" onContextMenu={openEditorMenu} onClick={closeEditorMenu}>
+        {map(funcs, (func, index) => (
+          <Function func={func} funcs={allFuncs} key={index} />
+        ))}
       </div>
-    }
-    <div className="editableArea" onContextMenu={openEditorMenu} onClick={closeEditorMenu}>
-      {map(funcs, (func, index) => <Function func={func} funcs={allFuncs} key={index}/>)}
+
+      {editorMenuPosition && (
+        <Menu
+          items={[{value: "addFunction", label: "Add function"}]}
+          select={addFunction}
+          position={editorMenuPosition}
+        />
+      )}
     </div>
-    {editorMenuPosition ?
-      <Menu
-        items={[{value: "addFunction", label: "Add function"}]}
-        select={addFunction}
-        position={editorMenuPosition}
-      /> : null
-    }
-  </div>;
+  );
 }

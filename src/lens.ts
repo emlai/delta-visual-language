@@ -1,9 +1,9 @@
 import {replace} from "./utils";
 
 export type Lens<T> = {
-  current: T
-  set: (value: T) => void
-}
+  current: T;
+  set: (value: T) => void;
+};
 
 export function lens<T>([current, set]: [T, (value: T) => void]): Lens<T> {
   return {current, set};

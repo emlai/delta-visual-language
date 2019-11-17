@@ -5,7 +5,7 @@ import {Editor} from "./Editor";
 
 ReactDOM.render(
   <IconContext.Provider value={{size: "1.5em"}}>
-    <Editor/>
+    <Editor />
   </IconContext.Provider>,
   document.getElementById("root")
 );

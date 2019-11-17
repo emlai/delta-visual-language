@@ -9,7 +9,7 @@ function createWindow() {
     width: 1280,
     height: 720,
     frame: false,
-    titleBarStyle: 'hiddenInset',
+    titleBarStyle: "hiddenInset",
     webPreferences: {
       nodeIntegration: true
     }
@@ -17,7 +17,7 @@ function createWindow() {
 
   mainWindow.loadFile("../index.html");
 
-  mainWindow.on("closed", function () {
+  mainWindow.on("closed", () => {
     mainWindow = null;
   });
 }

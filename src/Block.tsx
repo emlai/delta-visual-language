@@ -5,8 +5,8 @@ import {Lens, view} from "./lens";
 import {nextId} from "./utils";
 
 type Props = {
-  data: Lens<BlockData>
-  funcs: FunctionData[]
+  data: Lens<BlockData>;
+  funcs: FunctionData[];
 };
 
 export function Block(props: Props) {
@@ -26,7 +26,7 @@ export function Block(props: Props) {
     const block = props.data.current;
     switch (block.type) {
       case "empty":
-        return <AutocompleteField completions={completions} select={select}/>;
+        return <AutocompleteField completions={completions} select={select} />;
       case "call":
         const func = props.funcs.find(f => f.id === block.funcId);
         if (!func) throw Error(`Function ID "${block.funcId}" not found`);
@@ -44,18 +44,23 @@ export function Block(props: Props) {
           }
         };
 
-        return <div className="VarDecl">
-          <code>{varName}</code>
-          <div className="Arrow">{"←"}</div>
-          {value.type === "call"
-            ? <code>{props.funcs.find(func => func.id === value.funcId)?.name}</code>
-            : <AutocompleteField completions={completions} select={selectValue}/>
-          }
-        </div>;
+        return (
+          <div className="VarDecl">
+            <code>{varName}</code>
+            <div className="Arrow">{"←"}</div>
+            {value.type === "call" ? (
+              <code>{props.funcs.find(func => func.id === value.funcId)?.name}</code>
+            ) : (
+              <AutocompleteField completions={completions} select={selectValue} />
+            )}
+          </div>
+        );
     }
   }
 
-  return <div className="Block">
-    <BlockContent/>
-  </div>;
+  return (
+    <div className="Block">
+      <BlockContent />
+    </div>
+  );
 }

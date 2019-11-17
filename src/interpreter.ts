@@ -2,19 +2,24 @@
 import * as prompt from "electron-prompt";
 
 export type FunctionData = {
-  id: number
-  name: string
-  body: BlockData[]
-}
+  id: number;
+  name: string;
+  body: BlockData[];
+};
 
-export type Empty = {type: "empty"}
-export type Call = {type: "call", funcId: number}
-export type VarDecl = {type: "var", id: number, varName: string, value: Expr};
+export type Empty = {type: "empty"};
+export type Call = {type: "call"; funcId: number};
+export type VarDecl = {type: "var"; id: number; varName: string; value: Expr};
 
-export type Expr = Empty | Call
-export type BlockData = Empty | Call | VarDecl
+export type Expr = Empty | Call;
+export type BlockData = Empty | Call | VarDecl;
 
-export async function interpret(funcs: FunctionData[], blocks: BlockData[], arg?: unknown, vars: any = {}): Promise<unknown> {
+export async function interpret(
+  funcs: FunctionData[],
+  blocks: BlockData[],
+  arg?: unknown,
+  vars: any = {}
+): Promise<unknown> {
   return blocks.reduce<unknown>(async (prev, curr) => {
     switch (curr.type) {
       case "call":
@@ -31,7 +36,7 @@ export async function interpret(funcs: FunctionData[], blocks: BlockData[], arg?
         }
       case "var":
         await prev;
-        return vars[curr.id] = await interpret(funcs, [curr.value], undefined, vars);
+        return (vars[curr.id] = await interpret(funcs, [curr.value], undefined, vars));
     }
   }, arg);
 }

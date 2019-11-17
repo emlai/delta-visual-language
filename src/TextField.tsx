@@ -2,8 +2,8 @@ import * as React from "react";
 import {useState} from "react";
 
 type Props = {
-  value: string
-  onChange: (value: string) => void
+  value: string;
+  onChange: (value: string) => void;
 };
 
 export function TextField(props: Props) {
@@ -18,11 +18,13 @@ export function TextField(props: Props) {
     }
   }
 
-  return <input
-    className="TextField"
-    value={value}
-    onChange={event => setValue(event.target.value.trimLeft())}
-    onBlur={() => props.onChange(value)}
-    onKeyDown={onKeyDown}
-  />;
+  return (
+    <input
+      className="TextField"
+      value={value}
+      onChange={event => setValue(event.target.value.trimLeft())}
+      onBlur={() => props.onChange(value)}
+      onKeyDown={onKeyDown}
+    />
+  );
 }
