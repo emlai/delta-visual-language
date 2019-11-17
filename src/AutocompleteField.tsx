@@ -1,23 +1,33 @@
-import {Lens} from "./lens";
 import * as React from "react";
+import {useState} from "react";
 import {Menu} from "./Menu";
+import {lens} from "./lens";
 
 type Props<T> = {
-  value: Lens<string>
   completions?: Array<T>
-  select: (value: T) => void
+  select: (value: string) => void
 }
 
 export function AutocompleteField<T extends string>(props: Props<T>) {
-  const completions = props.completions
-    ?.filter(c => c.includes(props.value.current))
+  const value = lens(useState(""));
+
+  const completions = value.current && props.completions
+    ?.filter(c => c.includes(value.current))
     .map(c => ({value: c, label: <code>{c}</code>})) || [];
+
+  function onKeyDown(event: React.KeyboardEvent) {
+    if (event.key === "Enter" || event.key === "=") {
+      event.preventDefault();
+      props.select(value.current);
+    }
+  }
 
   return <div className="TextField">
     <code>
       <input
-        value={props.value.current}
-        onChange={event => props.value.set(event.target.value.trimLeft())}
+        value={value.current}
+        onChange={event => value.set(event.target.value.trimLeft())}
+        onKeyDown={onKeyDown}
         autoFocus={true}
       />
     </code>

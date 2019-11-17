@@ -128,3 +128,12 @@ input {
   background: transparent;
   box-shadow: none;
 }
+
+.VarDecl {
+  display: flex;
+  align-items: center;
+}
+
+.Arrow {
+  padding: 0 5px;
+}

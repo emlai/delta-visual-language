@@ -37,7 +37,7 @@ export function Editor() {
   }
 
   function RunButton() {
-    return <div className="RunButton" onClick={() => interpret(allFuncs, funcs.current.find(func => func.name === "main")!)}>
+    return <div className="RunButton" onClick={() => interpret(allFuncs, funcs.current.find(func => func.name === "main")!.body)}>
       <IoMdPlay/>
     </div>;
   }

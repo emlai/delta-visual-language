@@ -7,12 +7,15 @@ export type FunctionData = {
   body: BlockData[]
 }
 
-export type BlockData =
-  | {type: "empty"}
-  | {type: "call", funcId: number}
+export type Empty = {type: "empty"}
+export type Call = {type: "call", funcId: number}
+export type VarDecl = {type: "var", id: number, varName: string, value: Expr};
 
-export async function interpret(funcs: FunctionData[], func: FunctionData, arg?: unknown): Promise<unknown> {
-  return func.body.reduce<unknown>(async (prev, curr) => {
+export type Expr = Empty | Call
+export type BlockData = Empty | Call | VarDecl
+
+export async function interpret(funcs: FunctionData[], blocks: BlockData[], arg?: unknown, vars: any = {}): Promise<unknown> {
+  return blocks.reduce<unknown>(async (prev, curr) => {
     switch (curr.type) {
       case "call":
         const func = funcs.find(f => f.id === curr.funcId);
@@ -24,8 +27,11 @@ export async function interpret(funcs: FunctionData[], func: FunctionData, arg?:
           case "print":
             return alert(await prev);
           default:
-            return interpret(funcs, func, await prev);
+            return interpret(funcs, func.body, await prev, vars);
         }
+      case "var":
+        await prev;
+        return vars[curr.id] = await interpret(funcs, [curr.value], undefined, vars);
     }
   }, arg);
 }

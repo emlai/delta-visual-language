@@ -11,7 +11,10 @@ export function replace<T>(array: T[], index: number, element: T): T[] {
 
 let id = 0;
 
+export function nextId() {
+  return id++;
+}
+
 export function createFunc(name: string): FunctionData {
-  id++;
-  return {id, name, body: []};
+  return {id: nextId(), name, body: []};
 }
