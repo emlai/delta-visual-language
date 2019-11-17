@@ -16,8 +16,8 @@ export function Block(props: Props) {
 
   const select = (name: string) => {
     const fn = props.fns.find(fn => fn.name === name);
-    if (!fn) throw Error(`Function "${name}" not found`);
-    props.data.set({type: "call", fn});
+    if (!fn) throw Error(`Function name "${name}" not found`);
+    props.data.set({type: "call", fnId: fn.id});
   };
 
   function BlockContent() {
@@ -29,7 +29,9 @@ export function Block(props: Props) {
           select={select}
         />;
       default:
-        return <code>{block.fn.name}</code>;
+        const fn = props.fns.find(f => f.id === block.fnId);
+        if (!fn) throw Error(`Function ID "${block.fnId}" not found`);
+        return <code>{fn.name}</code>;
     }
   }
 
