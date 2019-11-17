@@ -4,14 +4,15 @@ import {useKey} from "react-use";
 import * as is from "electron-is";
 import {TitleBar as WindowsTitleBar} from "electron-react-titlebar";
 import {FunctionData, interpret} from "./interpreter";
-import {Position, replace} from "./utils";
+import {Position} from "./utils";
 import {Menu} from "./Menu";
 import {Function} from "./Function";
-import {lens} from "./lens";
+import {map, push} from "./lens";
+import {useState} from "./hooks";
 
 export function Editor() {
   const [editorMenuPosition, setEditorMenuPosition] = React.useState<Position | null>(null);
-  const [fns, setFns] = React.useState<FunctionData[]>([{name: "main", body: []}]);
+  const fns = useState<FunctionData[]>([{name: "main", body: []}]);
   useKey("Escape", closeEditorMenu);
 
   function openEditorMenu(event: React.MouseEvent) {
@@ -26,11 +27,11 @@ export function Editor() {
 
   function addFunction() {
     closeEditorMenu();
-    setFns(fns.concat({name: "", body: []}));
+    push(fns, {name: "", body: []});
   }
 
   function RunButton() {
-    return <div className="RunButton" onClick={() => interpret(fns.find(fn => fn.name === "main")!)}>
+    return <div className="RunButton" onClick={() => interpret(fns.get().find(fn => fn.name === "main")!)}>
       <IoMdPlay/>
     </div>;
   }
@@ -47,9 +48,7 @@ export function Editor() {
       </div>
     }
     <div className="editableArea" onContextMenu={openEditorMenu} onClick={closeEditorMenu}>
-      {fns.map((fn, index) =>
-        <Function fn={lens(fn, newFn => setFns(replace(fns, index, newFn)))} key={index}/>
-      )}
+      {map(fns, (fn, index) => <Function fn={fn} key={index}/>)}
     </div>
     {editorMenuPosition ?
       <Menu
