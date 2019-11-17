@@ -1,7 +1,8 @@
 import * as React from "react";
 import {IoMdPlay} from "react-icons/io";
 import {useKey} from "react-use";
-import {TitleBar} from "electron-react-titlebar";
+import * as is from "electron-is";
+import {TitleBar as WindowsTitleBar} from "electron-react-titlebar";
 import {FunctionData, interpret} from "./interpreter";
 import {Position, replace} from "./utils";
 import {Menu} from "./Menu";
@@ -27,13 +28,23 @@ export function Editor() {
     setFns(fns.concat({name: "", body: [{type: "empty"}]}));
   }
 
+  function RunButton() {
+    return <div className="RunButton" onClick={() => interpret(fns.find(fn => fn.name === "main")!)}>
+      <IoMdPlay/>
+    </div>;
+  }
+
   return <div className="Editor">
-    <TitleBar>
-      <link rel="stylesheet" type="text/css" href={require.resolve("electron-react-titlebar/assets/style.css")}/>
-      <div className="RunButton" onClick={() => interpret(fns.find(fn => fn.name === "main")!)}>
-        <IoMdPlay/>
+    {is.windows() ?
+      <WindowsTitleBar>
+        <link rel="stylesheet" type="text/css" href={require.resolve("electron-react-titlebar/assets/style.css")}/>
+        <RunButton/>
+      </WindowsTitleBar>
+      :
+      <div className="electron-app-title-bar non-windows">
+        <RunButton/>
       </div>
-    </TitleBar>
+    }
     <div className="editableArea" onContextMenu={openEditorMenu} onClick={closeEditorMenu}>
       {fns.map((fn, index) =>
         <Function
@@ -48,6 +59,7 @@ export function Editor() {
         items={[{value: "addFunction", label: "Add function"}]}
         select={addFunction}
         position={editorMenuPosition}
-      /> : null}
+      /> : null
+    }
   </div>;
 }

@@ -5,6 +5,7 @@
     "electron": "electron ./build/main.js"
   },
   "dependencies": {
+    "electron-is": "^3.0.0",
     "electron-prompt": "^1.4.0",
     "electron-react-titlebar": "^0.8.2",
     "react": "^16.11.0",

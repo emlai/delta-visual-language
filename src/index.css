@@ -35,6 +35,17 @@ input {
   border-bottom: none !important;
 }
 
+.electron-app-title-bar.non-windows {
+  height: 38px;
+  -webkit-app-region: drag;
+}
+
+.electron-app-title-bar.non-windows .RunButton {
+  position: absolute;
+  left: 79px;
+  height: inherit;
+}
+
 .Editor {
   display: flex;
   flex-direction: column;
