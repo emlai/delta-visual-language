@@ -10,13 +10,13 @@ type Props<T> = {
 
 export function AutocompleteField<T extends string>(props: Props<T>) {
   const completions = props.completions
-    ?.filter(c => c.includes(props.value.get()))
+    ?.filter(c => c.includes(props.value.current))
     .map(c => ({value: c, label: <code>{c}</code>})) || [];
 
   return <div className="TextField">
     <code>
       <input
-        value={props.value.get()}
+        value={props.value.current}
         onChange={event => props.value.set(event.target.value.trimLeft())}
         autoFocus={true}
       />

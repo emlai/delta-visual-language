@@ -18,7 +18,7 @@ export function Editor() {
   const [editorMenuPosition, setEditorMenuPosition] = React.useState<Position | null>(null);
   const funcs = lens(useState<FunctionData[]>([main]));
   const builtinFuncs = [prompt, print];
-  const allFuncs = funcs.get().concat(builtinFuncs);
+  const allFuncs = funcs.current.concat(builtinFuncs);
   useKey("Escape", closeEditorMenu);
 
   function openEditorMenu(event: React.MouseEvent) {
@@ -37,7 +37,7 @@ export function Editor() {
   }
 
   function RunButton() {
-    return <div className="RunButton" onClick={() => interpret(allFuncs, funcs.get().find(func => func.name === "main")!)}>
+    return <div className="RunButton" onClick={() => interpret(allFuncs, funcs.current.find(func => func.name === "main")!)}>
       <IoMdPlay/>
     </div>;
   }

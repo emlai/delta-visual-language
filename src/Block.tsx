@@ -12,7 +12,7 @@ type Props = {
 export function Block(props: Props) {
   const value = lens(useState(""));
   const completions = props.funcs.map(func => func.name);
-  const block = props.data.get();
+  const block = props.data.current;
 
   const select = (name: string) => {
     const func = props.funcs.find(func => func.name === name);

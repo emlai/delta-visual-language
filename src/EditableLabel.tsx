@@ -8,7 +8,7 @@ type Props = {
 };
 
 export function EditableLabel(props: Props) {
-  const [editing, setEditing] = useState(!props.value.get());
+  const [editing, setEditing] = useState(!props.value.current);
 
   const onChange = (value: string) => {
     props.value.set(value);
@@ -16,8 +16,8 @@ export function EditableLabel(props: Props) {
   };
 
   if (editing) {
-    return <TextField value={props.value.get()} onChange={onChange}/>;
+    return <TextField value={props.value.current} onChange={onChange}/>;
   } else {
-    return <div onClick={() => setEditing(true)}>{props.value.get()}</div>;
+    return <div onClick={() => setEditing(true)}>{props.value.current}</div>;
   }
 }
