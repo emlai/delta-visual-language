@@ -16,7 +16,7 @@ code {
 
 input {
   width: 100%;
-  background: #111;
+  background: #000;
   color: inherit;
   border: none;
   border-radius: 2px;
@@ -24,6 +24,10 @@ input {
   padding: 5px;
   font-family: inherit;
   font-size: inherit;
+}
+
+.Block input {
+  background: #111;
 }
 
 .electron-app-title-bar {

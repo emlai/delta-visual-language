@@ -1,26 +1,24 @@
-import {Lens} from "./lens";
 import * as React from "react";
-import {Menu} from "./Menu";
+import {useState} from "react";
+import {useKey} from "react-use";
 
-type Props<T> = {
-  value: Lens<string>
-  completions?: Array<T>
-  select: (value: T) => void
-}
+type Props = {
+  value: string
+  onChange: (value: string) => void
+};
 
-export function TextField<T extends string>(props: Props<T>) {
-  const completions = props.value.get() && props.completions
-    ?.filter(c => c.includes(props.value.get()))
-    .map(c => ({value: c, label: <code>{c}</code>})) || [];
+export function TextField(props: Props) {
+  const [value, setValue] = useState(props.value);
+  useKey("Enter", () => props.onChange(value));
+  useKey("Escape", () => {
+    setValue(props.value);
+    props.onChange(props.value);
+  });
 
-  return <div className="TextField">
-    <code>
-      <input
-        value={props.value.get()}
-        onChange={event => props.value.set(event.target.value.trimLeft())}
-        autoFocus={true}
-      />
-    </code>
-    <Menu items={completions} select={props.select}/>
-  </div>;
+  return <input
+    className="TextField"
+    value={value}
+    onChange={event => setValue(event.target.value.trimLeft())}
+    onBlur={() => props.onChange(value)}
+  />;
 }

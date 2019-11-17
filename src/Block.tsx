@@ -1,7 +1,7 @@
 import * as React from "react";
-import {TextField} from "./TextField";
 import {useState} from "./hooks";
 import {BlockData, BlockType} from "./interpreter";
+import {AutocompleteField} from "./AutocompleteField";
 
 type Props = {
   data: BlockData,
@@ -15,7 +15,11 @@ export function Block(props: Props) {
   function BlockContent() {
     switch (props.data.type) {
       case "empty":
-        return <TextField value={value} completions={completions} select={type => props.setData({type})}/>;
+        return <AutocompleteField
+          value={value}
+          completions={completions}
+          select={type => props.setData({type})}
+        />;
       default:
         return <code>{props.data.type}</code>;
     }
