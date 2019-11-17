@@ -10,18 +10,20 @@ import {Function} from "./Function";
 export function Editor() {
   const [editorMenuPosition, setEditorMenuPosition] = React.useState<Position | null>(null);
   const [fns, setFns] = React.useState<FunctionData[]>([{name: "main", body: [{type: "empty"}]}]);
-  useKey("Escape", () => setEditorMenuPosition(null));
+  useKey("Escape", closeEditorMenu);
 
   function openEditorMenu(event: React.MouseEvent) {
-    if (!editorMenuPosition && event.target === event.currentTarget) {
+    if (event.target === event.currentTarget) {
       setEditorMenuPosition({x: event.clientX, y: event.clientY});
-    } else {
-      setEditorMenuPosition(null);
     }
   }
 
-  function addFunction() {
+  function closeEditorMenu() {
     setEditorMenuPosition(null);
+  }
+
+  function addFunction() {
+    closeEditorMenu();
     setFns(fns.concat({name: "", body: [{type: "empty"}]}));
   }
 
@@ -32,7 +34,7 @@ export function Editor() {
         <IoMdPlay/>
       </div>
     </TitleBar>
-    <div className="editableArea" onClick={openEditorMenu}>
+    <div className="editableArea" onContextMenu={openEditorMenu} onClick={closeEditorMenu}>
       {fns.map((fn, index) =>
         <Function
           fn={fn}
