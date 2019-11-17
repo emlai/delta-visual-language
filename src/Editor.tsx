@@ -1,4 +1,5 @@
 import * as React from "react";
+import {useState} from "react";
 import {IoMdPlay} from "react-icons/io";
 import {useKey} from "react-use";
 import * as is from "electron-is";
@@ -7,12 +8,11 @@ import {FunctionData, interpret} from "./interpreter";
 import {Position} from "./utils";
 import {Menu} from "./Menu";
 import {Function} from "./Function";
-import {map, push} from "./lens";
-import {useState} from "./hooks";
+import {lens, map, push} from "./lens";
 
 export function Editor() {
   const [editorMenuPosition, setEditorMenuPosition] = React.useState<Position | null>(null);
-  const fns = useState<FunctionData[]>([{name: "main", body: []}]);
+  const fns = lens(useState<FunctionData[]>([{name: "main", body: []}]));
   useKey("Escape", closeEditorMenu);
 
   function openEditorMenu(event: React.MouseEvent) {

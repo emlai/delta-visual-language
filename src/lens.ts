@@ -5,7 +5,7 @@ export type Lens<T> = {
   set: (value: T) => void
 }
 
-export function lens<T>(value: T, setter: (value: T) => void): Lens<T> {
+export function lens<T>([value, setter]: [T, (value: T) => void]): Lens<T> {
   return {
     get: () => value,
     set: setter
@@ -22,7 +22,7 @@ export function view<T, K extends keyof T>(key: K, lens: Lens<T>): Lens<T[K]> {
 export function map<T, U>(array: Lens<T[]>, callback: (element: Lens<T>, index: number) => U): U[] {
   return array.get().map((value, index) => {
     const setter = (newValue: T) => array.set(replace(array.get(), index, newValue));
-    return callback(lens(value, setter), index);
+    return callback(lens([value, setter]), index);
   });
 }
 
