@@ -13,6 +13,7 @@ import {lens, map, push} from "./lens";
 export function Editor() {
   const [editorMenuPosition, setEditorMenuPosition] = React.useState<Position | null>(null);
   const fns = lens(useState<FunctionData[]>([{name: "main", body: []}]));
+  const builtinFns: FunctionData[] = [{name: "prompt", body: []}, {name: "print", body: []}];
   useKey("Escape", closeEditorMenu);
 
   function openEditorMenu(event: React.MouseEvent) {
@@ -48,7 +49,7 @@ export function Editor() {
       </div>
     }
     <div className="editableArea" onContextMenu={openEditorMenu} onClick={closeEditorMenu}>
-      {map(fns, (fn, index) => <Function fn={fn} key={index}/>)}
+      {map(fns, (fn, index) => <Function fn={fn} fns={fns.get().concat(builtinFns)} key={index}/>)}
     </div>
     {editorMenuPosition ?
       <Menu

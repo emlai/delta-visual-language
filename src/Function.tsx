@@ -7,10 +7,11 @@ import {Lens, map, push, view} from "./lens";
 
 type Props = {
   fn: Lens<FunctionData>
+  fns: FunctionData[]
 }
 
 export function Function(props: Props) {
-  const {fn} = props;
+  const {fn, fns} = props;
   const addBlock = () => push(view("body", fn), {type: "empty"});
 
   return <div className="Function">
@@ -18,7 +19,7 @@ export function Function(props: Props) {
       <EditableLabel value={view("name", fn)}/>
     </code>
     {map(view("body", fn), (block, index) => {
-      return <Block data={block} key={index}/>;
+      return <Block data={block} fns={fns} key={index}/>;
     })}
     <a href="#" className="Block AddBlockButton" onClick={addBlock}>
       <IoMdAdd/>

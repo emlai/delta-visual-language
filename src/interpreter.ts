@@ -6,19 +6,22 @@ export type FunctionData = {
   body: BlockData[]
 }
 
-export type BlockType = "prompt" | "print" | "empty";
+export type BlockData =
+  | {type: "empty"}
+  | {type: "call", fn: FunctionData}
 
-export type BlockData = {
-  type: BlockType
-};
-
-export async function interpret(fn: FunctionData) {
-  return fn.body.reduce<any>(async (prev, curr) => {
+export async function interpret(fn: FunctionData, arg?: unknown): Promise<unknown> {
+  return fn.body.reduce<unknown>(async (prev, curr) => {
     switch (curr.type) {
-      case "prompt":
-        return prompt(await prev);
-      case "print":
-        return alert(await prev);
+      case "call":
+        switch (curr.fn.name) {
+          case "prompt":
+            return prompt(await prev);
+          case "print":
+            return alert(await prev);
+          default:
+            return interpret(curr.fn, await prev);
+        }
     }
-  }, undefined);
+  }, arg);
 }
