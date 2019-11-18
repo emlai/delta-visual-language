@@ -15,6 +15,6 @@ export function nextId() {
   return id++;
 }
 
-export function createFunc(name: string): FunctionData {
-  return {id: nextId(), name, body: []};
+export function createFunc(name: string, params: unknown[]): FunctionData {
+  return {id: nextId(), name, params, body: []};
 }

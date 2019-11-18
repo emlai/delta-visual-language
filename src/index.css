@@ -129,11 +129,13 @@ input {
   box-shadow: none;
 }
 
+.Call,
 .VarDecl {
   display: flex;
   align-items: center;
 }
 
-.Arrow {
-  padding: 0 5px;
+.Call > * + *,
+.VarDecl > * + * {
+  margin-left: 5px;
 }

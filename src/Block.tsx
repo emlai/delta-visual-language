@@ -1,58 +1,43 @@
 import * as React from "react";
-import {BlockData, FunctionData, VarDecl} from "./interpreter";
+import {BlockData, Expr, FunctionData, VarDecl} from "./interpreter";
 import {AutocompleteField} from "./AutocompleteField";
 import {Lens, view} from "./lens";
 import {nextId} from "./utils";
+import {Expression} from "./Expression";
 
 type Props = {
   data: Lens<BlockData>;
   funcs: FunctionData[];
+  vars: VarDecl[];
 };
 
 export function Block(props: Props) {
-  const completions = props.funcs.map(func => func.name);
-
   const select = (name: string) => {
     const func = props.funcs.find(func => func.name === name);
 
     if (func) {
-      props.data.set({type: "call", funcId: func.id});
+      props.data.set({type: "call", funcId: func.id, args: func.params.map(() => ({type: "empty"}))});
     } else {
-      props.data.set({type: "var", id: nextId(), varName: name, value: {type: "empty"}});
+      props.data.set({type: "var-decl", id: nextId(), name: name, value: {type: "empty"}});
     }
   };
 
   function BlockContent() {
     const block = props.data.current;
+
     switch (block.type) {
       case "empty":
-        return <AutocompleteField completions={completions} select={select} />;
+        return <AutocompleteField completions={props.funcs.map(func => func.name)} select={select} />;
+
       case "call":
-        const func = props.funcs.find(f => f.id === block.funcId);
-        if (!func) throw Error(`Function ID "${block.funcId}" not found`);
-        return <code>{func.name}</code>;
-      case "var":
-        const {varName, value} = block;
+        return <Expression expr={props.data as Lens<Expr>} funcs={props.funcs} vars={props.vars} />;
 
-        const selectValue = (name: string) => {
-          const valueLens = view("value", props.data as Lens<VarDecl>);
-          const func = props.funcs.find(func => func.name === name);
-          if (func) {
-            valueLens.set({type: "call", funcId: func.id});
-          } else {
-            throw Error(`"${name}" is not a function`);
-          }
-        };
-
+      case "var-decl":
         return (
           <div className="VarDecl">
-            <code>{varName}</code>
+            <code>{block.name}</code>
             <div className="Arrow">{"←"}</div>
-            {value.type === "call" ? (
-              <code>{props.funcs.find(func => func.id === value.funcId)?.name}</code>
-            ) : (
-              <AutocompleteField completions={completions} select={selectValue} />
-            )}
+            <Expression expr={view("value", props.data as Lens<VarDecl>)} funcs={props.funcs} vars={props.vars} />
           </div>
         );
     }

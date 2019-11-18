@@ -10,9 +10,9 @@ import {Menu} from "./Menu";
 import {Function} from "./Function";
 import {lens, map, push} from "./lens";
 
-const main = createFunc("main");
-const prompt = createFunc("prompt");
-const print = createFunc("print");
+const main = createFunc("main", []);
+const prompt = createFunc("prompt", []);
+const print = createFunc("print", [undefined]);
 
 export function Editor() {
   const [editorMenuPosition, setEditorMenuPosition] = React.useState<Position | null>(null);
@@ -33,14 +33,15 @@ export function Editor() {
 
   function addFunction() {
     closeEditorMenu();
-    push(funcs, createFunc(""));
+    push(funcs, createFunc("", []));
   }
 
   function RunButton() {
     const run = () => {
       const main = funcs.current.find(func => func.name === "main")!;
-      return interpret(allFuncs, main.body);
+      return interpret(main.body, allFuncs);
     };
+
     return (
       <div className="RunButton" onClick={run}>
         <IoMdPlay />
