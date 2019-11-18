@@ -1,13 +1,13 @@
 import * as React from "react";
 import {IoMdAdd} from "react-icons/io";
-import {FunctionData, VarDecl} from "./interpreter";
+import {Func, VarDecl} from "./interpreter";
 import {Block} from "./Block";
 import {EditableLabel} from "./EditableLabel";
 import {Lens, map, push, view} from "./lens";
 
 type Props = {
-  func: Lens<FunctionData>;
-  funcs: FunctionData[];
+  func: Lens<Func>;
+  funcs: Func[];
 };
 
 export function Function(props: Props) {

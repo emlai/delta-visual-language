@@ -1,4 +1,4 @@
-import {FunctionData} from "./interpreter";
+import {Func} from "./interpreter";
 
 export type Position = {
   x: number;
@@ -15,6 +15,6 @@ export function nextId() {
   return id++;
 }
 
-export function createFunc(name: string, params: unknown[]): FunctionData {
+export function createFunc(name: string, params: unknown[]): Func {
   return {id: nextId(), name, params, body: []};
 }

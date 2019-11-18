@@ -1,7 +1,7 @@
 // @ts-ignore
 import * as prompt from "electron-prompt";
 
-export type FunctionData = {
+export type Func = {
   id: number;
   name: string;
   params: unknown[];
@@ -16,7 +16,7 @@ export type VarDecl = {type: "var-decl"; id: number; name: string; value: Expr};
 export type Expr = Empty | Var | Call;
 export type BlockData = Empty | Call | VarDecl;
 
-export async function interpret(blocks: BlockData[], funcs: FunctionData[], vars: any = {}): Promise<unknown> {
+export async function interpret(blocks: BlockData[], funcs: Func[], vars: any = {}): Promise<unknown> {
   return blocks.reduce<unknown>(async (prev, curr) => {
     await prev;
 
@@ -29,7 +29,7 @@ export async function interpret(blocks: BlockData[], funcs: FunctionData[], vars
   }, undefined);
 }
 
-async function evaluate(expr: Expr, funcs: FunctionData[], vars: any): Promise<unknown> {
+async function evaluate(expr: Expr, funcs: Func[], vars: any): Promise<unknown> {
   switch (expr.type) {
     case "call":
       const func = funcs.find(f => f.id === expr.funcId);

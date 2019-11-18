@@ -1,11 +1,11 @@
 import * as React from "react";
-import {Call, Expr, FunctionData, VarDecl} from "./interpreter";
+import {Call, Expr, Func, VarDecl} from "./interpreter";
 import {AutocompleteField} from "./AutocompleteField";
 import {Lens, map, view} from "./lens";
 
 type Props = {
   expr: Lens<Expr>;
-  funcs: FunctionData[];
+  funcs: Func[];
   vars: VarDecl[];
 };
 
