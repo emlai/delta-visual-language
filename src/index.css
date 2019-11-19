@@ -66,9 +66,25 @@ input {
   margin: 20px;
 }
 
-.FunctionName {
+.FunctionHeader {
+  display: flex;
+  align-items: center;
   padding: 7px;
   text-align: center;
+}
+
+.AddParamButton {
+  line-height: 0;
+  color: #555;
+}
+
+.Function:not(:hover) .AddParamButton {
+  visibility: hidden;
+}
+
+.AddParamButton:hover,
+.AddParamButton:focus {
+  color: inherit;
 }
 
 .RunButton {
@@ -135,6 +151,7 @@ input {
   align-items: center;
 }
 
+.FunctionHeader > * + *,
 .Call > * + *,
 .VarDecl > * + * {
   margin-left: 5px;

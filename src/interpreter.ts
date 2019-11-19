@@ -1,10 +1,14 @@
 // @ts-ignore
 import * as prompt from "electron-prompt";
 
+export type Param = {
+  name: string;
+};
+
 export type Func = {
   id: number;
   name: string;
-  params: unknown[];
+  params: Param[];
   body: BlockData[];
 };
 

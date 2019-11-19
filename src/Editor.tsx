@@ -12,7 +12,7 @@ import {lens, map, push} from "./lens";
 
 const main = createFunc("main", []);
 const prompt = createFunc("prompt", []);
-const print = createFunc("print", [undefined]);
+const print = createFunc("print", [{name: ""}]);
 
 export function Editor() {
   const [editorMenuPosition, setEditorMenuPosition] = React.useState<Position | null>(null);
