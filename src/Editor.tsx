@@ -7,7 +7,7 @@ import {interpret} from "./interpreter";
 import {createFunc, nextId} from "./utils";
 import {Menu} from "./Menu";
 import {Function} from "./Function";
-import {lens, map, push} from "./lens";
+import {lens, map, push, remove} from "./lens";
 import {useContextMenu} from "./context-menu";
 
 const main = createFunc("main", []);
@@ -55,7 +55,7 @@ export function Editor() {
 
       <ContextMenuTrigger className="editableArea">
         {map(funcs, (func, index) => (
-          <Function func={func} decls={decls} key={index} />
+          <Function func={func} decls={decls} deleteFunc={() => remove(funcs, index)} key={index} />
         ))}
       </ContextMenuTrigger>
     </div>
