@@ -2,7 +2,7 @@
 import * as prompt from "electron-prompt";
 
 export interface Decl {
-  id: number;
+  id: string;
   name: string;
 }
 
@@ -14,9 +14,9 @@ export interface Func extends Decl {
 }
 
 export type Empty = {type: "empty"};
-export type Call = {type: "call"; funcId: number; args: Expr[]};
-export type Var = {type: "var"; varId: number};
-export type VarDecl = {type: "var-decl"; id: number; name: string; value: Expr};
+export type Call = {type: "call"; funcId: string; args: Expr[]};
+export type Var = {type: "var"; varId: string};
+export type VarDecl = {type: "var-decl"; id: string; name: string; value: Expr};
 
 export type Expr = Empty | Var | Call;
 export type BlockData = Empty | Call | VarDecl;

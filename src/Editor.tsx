@@ -4,15 +4,15 @@ import {useLocalStorage} from "react-use";
 import * as is from "electron-is";
 import {TitleBar as WindowsTitleBar} from "electron-react-titlebar";
 import {interpret} from "./interpreter";
-import {createFunc, nextId} from "./utils";
+import {createBuiltinFunc, createFunc, nextId} from "./utils";
 import {Menu} from "./Menu";
 import {Function} from "./Function";
 import {lens, map, push, remove} from "./lens";
 import {useContextMenu} from "./context-menu";
 
-const main = createFunc("main", []);
-const prompt = createFunc("prompt", []);
-const print = createFunc("print", [{id: nextId(), name: ""}]);
+const main = createBuiltinFunc("main", []);
+const prompt = createBuiltinFunc("prompt", []);
+const print = createBuiltinFunc("print", [{id: nextId(), name: ""}]);
 
 export function Editor() {
   const funcs = lens(useLocalStorage("delta-project", [main]));
