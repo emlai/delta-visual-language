@@ -24,7 +24,7 @@ export function AutocompleteField<T extends string>(props: Props<T>) {
   }
 
   return (
-    <div className="TextField">
+    <div>
       <code>
         <input
           value={value.current}
@@ -33,7 +33,7 @@ export function AutocompleteField<T extends string>(props: Props<T>) {
           autoFocus={true}
         />
       </code>
-      <div style={{position: "absolute"}}>
+      <div className="MenuOverlay">
         <Menu items={completions} select={props.select} />
       </div>
     </div>

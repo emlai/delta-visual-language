@@ -61,7 +61,7 @@ export function ExprField(props: Props) {
           autoFocus={true}
         />
       </code>
-      <div style={{position: "absolute"}}>
+      <div className="MenuOverlay">
         <Menu items={completions} select={select} />
       </div>
     </div>

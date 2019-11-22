@@ -113,8 +113,8 @@ input,
   margin-top: 5px;
 }
 
-.TextField {
-  position: relative;
+.MenuOverlay {
+  position: absolute;
 }
 
 .Menu {
