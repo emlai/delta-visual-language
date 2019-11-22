@@ -1,7 +1,6 @@
 import * as React from "react";
-import {useState} from "react";
 import {IoMdPlay} from "react-icons/io";
-import {useKey} from "react-use";
+import {useKey, useLocalStorage} from "react-use";
 import * as is from "electron-is";
 import {TitleBar as WindowsTitleBar} from "electron-react-titlebar";
 import {interpret} from "./interpreter";
@@ -16,7 +15,7 @@ const print = createFunc("print", [{id: nextId(), name: ""}]);
 
 export function Editor() {
   const [editorMenuPosition, setEditorMenuPosition] = React.useState<Position | null>(null);
-  const funcs = lens(useState([main]));
+  const funcs = lens(useLocalStorage("delta-project", [main]));
   const builtinFuncs = [prompt, print];
   const decls = funcs.current.concat(builtinFuncs);
   useKey("Escape", closeEditorMenu);
