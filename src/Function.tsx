@@ -3,7 +3,7 @@ import {IoMdAdd} from "react-icons/io";
 import {Decl, Func, isVarDecl} from "./interpreter";
 import {Block} from "./Block";
 import {EditableLabel} from "./EditableLabel";
-import {Lens, map, push, view} from "./lens";
+import {Lens, map, push, remove, view} from "./lens";
 import {nextId} from "./utils";
 
 type Props = {
@@ -34,8 +34,8 @@ export function Function(props: Props) {
           </a>
         )}
       </div>
-      {map(view("body", func), (block, index) => (
-        <Block data={block} decls={decls} key={index} />
+      {map(view("body", func), (block, index, blocks) => (
+        <Block data={block} decls={decls} deleteBlock={() => remove(blocks, index)} key={index} />
       ))}
       <a href="#" className="Block AddBlockButton" onClick={addBlock}>
         <IoMdAdd />
