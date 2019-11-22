@@ -1,46 +1,47 @@
 import * as React from "react";
-import {Call, Decl, Expr, Func} from "./interpreter";
+import {Call, Decl, Expr, isFunc} from "./interpreter";
 import {AutocompleteField} from "./AutocompleteField";
 import {Lens, map, view} from "./lens";
 
 type Props = {
   expr: Lens<Expr>;
-  funcs: Func[];
-  vars: Decl[];
+  decls: Decl[];
 };
 
 export function Expression(props: Props) {
-  const {funcs, vars} = props;
+  const {decls} = props;
   const expr = props.expr.current;
 
   switch (expr.type) {
     case "empty":
-      const completions = funcs.map(f => f.name).concat(vars.map(v => v.name));
-
       const select = (name: string) => {
-        const func = funcs.find(f => f.name === name);
-        if (func) {
-          props.expr.set({type: "call", funcId: func.id, args: func.params.map(() => ({type: "empty"}))});
-          return;
-        }
-        const variable = vars.find(v => v.name === name);
-        if (variable) {
-          props.expr.set({type: "var", varId: variable.id});
+        const decl = decls.find(decl => decl.name === name);
+        if (!decl) throw Error(`Variable name "${name}" not found`);
+
+        if (isFunc(decl)) {
+          props.expr.set({type: "call", funcId: decl.id, args: decl.params.map(() => ({type: "empty"}))});
+        } else {
+          props.expr.set({type: "var", varId: decl.id});
         }
       };
 
-      return <AutocompleteField completions={completions} select={select} />;
+      return <AutocompleteField completions={decls.map(decl => decl.name)} select={select} />;
+
     case "var":
-      return <code>{vars.find(v => v.id === expr.varId)!.name}</code>;
+      const variable = decls.find(decl => decl.id === expr.varId);
+      if (!variable) throw Error(`Variable ID "${expr.varId}" not found`);
+
+      return <code>{variable.name}</code>;
+
     case "call":
-      const func = funcs.find(f => f.id === expr.funcId);
+      const func = decls.find(decl => decl.id === expr.funcId);
       if (!func) throw Error(`Function ID "${expr.funcId}" not found`);
 
       return (
         <div className="Call">
           <code>{func.name}</code>
           {map(view("args", props.expr as Lens<Call>), (arg, index) => (
-            <Expression expr={arg} funcs={funcs} vars={vars} key={index} />
+            <Expression expr={arg} decls={decls} key={index} />
           ))}
         </div>
       );

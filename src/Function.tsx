@@ -8,14 +8,14 @@ import {nextId} from "./utils";
 
 type Props = {
   func: Lens<Func>;
-  funcs: Func[];
+  decls: Decl[];
 };
 
 export function Function(props: Props) {
-  const {func, funcs} = props;
+  const {func} = props;
   const addParam = () => push(view("params", func), {id: nextId(), name: ""});
   const addBlock = () => push(view("body", func), {type: "empty"});
-  const vars: Decl[] = [...func.current.body.filter(isVarDecl), ...func.current.params];
+  const decls = props.decls.concat(func.current.body.filter(isVarDecl)).concat(func.current.params);
 
   return (
     <div className="Function">
@@ -35,7 +35,7 @@ export function Function(props: Props) {
         )}
       </div>
       {map(view("body", func), (block, index) => (
-        <Block data={block} funcs={funcs} vars={vars} key={index} />
+        <Block data={block} decls={decls} key={index} />
       ))}
       <a href="#" className="Block AddBlockButton" onClick={addBlock}>
         <IoMdAdd />

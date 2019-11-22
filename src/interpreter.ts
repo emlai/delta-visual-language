@@ -25,6 +25,10 @@ export function isVarDecl(block: BlockData): block is VarDecl {
   return block.type === "var-decl";
 }
 
+export function isFunc(decl: Decl): decl is Func {
+  return "body" in decl;
+}
+
 export async function interpret(blocks: BlockData[], funcs: Func[], vars: any = {}): Promise<unknown> {
   return blocks.reduce<unknown>(async (prev, curr) => {
     await prev;

@@ -18,7 +18,7 @@ export function Editor() {
   const [editorMenuPosition, setEditorMenuPosition] = React.useState<Position | null>(null);
   const funcs = lens(useState([main]));
   const builtinFuncs = [prompt, print];
-  const allFuncs = funcs.current.concat(builtinFuncs);
+  const decls = funcs.current.concat(builtinFuncs);
   useKey("Escape", closeEditorMenu);
 
   function openEditorMenu(event: React.MouseEvent) {
@@ -39,7 +39,7 @@ export function Editor() {
   function RunButton() {
     const run = () => {
       const main = funcs.current.find(func => func.name === "main")!;
-      return interpret(main.body, allFuncs);
+      return interpret(main.body, decls);
     };
 
     return (
@@ -64,7 +64,7 @@ export function Editor() {
 
       <div className="editableArea" onContextMenu={openEditorMenu} onClick={closeEditorMenu}>
         {map(funcs, (func, index) => (
-          <Function func={func} funcs={allFuncs} key={index} />
+          <Function func={func} decls={decls} key={index} />
         ))}
       </div>
 
