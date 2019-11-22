@@ -2,10 +2,10 @@ import * as React from "react";
 import {BlockData, Decl, Expr, isFunc, VarDecl} from "./interpreter";
 import {AutocompleteField} from "./AutocompleteField";
 import {Lens, view} from "./lens";
-import {nextId, Position} from "./utils";
+import {nextId} from "./utils";
 import {Expression} from "./Expression";
-import {useKey} from "react-use";
 import {Menu} from "./Menu";
+import {useContextMenu} from "./context-menu";
 
 type Props = {
   data: Lens<BlockData>;
@@ -14,19 +14,6 @@ type Props = {
 };
 
 export function Block(props: Props) {
-  const [blockMenuPosition, setBlockMenuPosition] = React.useState<Position | null>(null);
-  useKey("Escape", closeBlockMenu);
-
-  function openBlockMenu(event: React.MouseEvent) {
-    if (event.target === event.currentTarget) {
-      setBlockMenuPosition({x: event.clientX, y: event.clientY});
-    }
-  }
-
-  function closeBlockMenu() {
-    setBlockMenuPosition(null);
-  }
-
   const select = (name: string) => {
     const decl = props.decls.find(decl => decl.name === name);
 
@@ -58,17 +45,13 @@ export function Block(props: Props) {
     }
   }
 
-  return (
-    <div className="Block" onContextMenu={openBlockMenu}>
-      <BlockContent />
+  const ContextMenuTrigger = useContextMenu(
+    <Menu items={[{value: "deleteBlock", label: "Delete block"}]} select={props.deleteBlock} />
+  );
 
-      {blockMenuPosition && (
-        <Menu
-          items={[{value: "deleteBlock", label: "Delete block"}]}
-          select={props.deleteBlock}
-          position={blockMenuPosition}
-        />
-      )}
-    </div>
+  return (
+    <ContextMenuTrigger className="Block">
+      <BlockContent />
+    </ContextMenuTrigger>
   );
 }

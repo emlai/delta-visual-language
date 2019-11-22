@@ -1,37 +1,25 @@
 import * as React from "react";
 import {IoMdPlay} from "react-icons/io";
-import {useKey, useLocalStorage} from "react-use";
+import {useLocalStorage} from "react-use";
 import * as is from "electron-is";
 import {TitleBar as WindowsTitleBar} from "electron-react-titlebar";
 import {interpret} from "./interpreter";
-import {createFunc, nextId, Position} from "./utils";
+import {createFunc, nextId} from "./utils";
 import {Menu} from "./Menu";
 import {Function} from "./Function";
 import {lens, map, push} from "./lens";
+import {useContextMenu} from "./context-menu";
 
 const main = createFunc("main", []);
 const prompt = createFunc("prompt", []);
 const print = createFunc("print", [{id: nextId(), name: ""}]);
 
 export function Editor() {
-  const [editorMenuPosition, setEditorMenuPosition] = React.useState<Position | null>(null);
   const funcs = lens(useLocalStorage("delta-project", [main]));
   const builtinFuncs = [prompt, print];
   const decls = funcs.current.concat(builtinFuncs);
-  useKey("Escape", closeEditorMenu);
-
-  function openEditorMenu(event: React.MouseEvent) {
-    if (event.target === event.currentTarget) {
-      setEditorMenuPosition({x: event.clientX, y: event.clientY});
-    }
-  }
-
-  function closeEditorMenu() {
-    setEditorMenuPosition(null);
-  }
 
   function addFunction() {
-    closeEditorMenu();
     push(funcs, createFunc("", []));
   }
 
@@ -48,6 +36,10 @@ export function Editor() {
     );
   }
 
+  const ContextMenuTrigger = useContextMenu(
+    <Menu items={[{value: "addFunction", label: "Add function"}]} select={addFunction} />
+  );
+
   return (
     <div className="Editor">
       {is.windows() ? (
@@ -61,19 +53,11 @@ export function Editor() {
         </div>
       )}
 
-      <div className="editableArea" onContextMenu={openEditorMenu} onClick={closeEditorMenu}>
+      <ContextMenuTrigger className="editableArea">
         {map(funcs, (func, index) => (
           <Function func={func} decls={decls} key={index} />
         ))}
-      </div>
-
-      {editorMenuPosition && (
-        <Menu
-          items={[{value: "addFunction", label: "Add function"}]}
-          select={addFunction}
-          position={editorMenuPosition}
-        />
-      )}
+      </ContextMenuTrigger>
     </div>
   );
 }

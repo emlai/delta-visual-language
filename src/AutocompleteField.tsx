@@ -33,7 +33,9 @@ export function AutocompleteField<T extends string>(props: Props<T>) {
           autoFocus={true}
         />
       </code>
-      <Menu items={completions} select={props.select} />
+      <div style={{position: "absolute"}}>
+        <Menu items={completions} select={props.select} />
+      </div>
     </div>
   );
 }
