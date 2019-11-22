@@ -1,9 +1,10 @@
 import * as React from "react";
 import {IoMdAdd} from "react-icons/io";
-import {Func, VarDecl} from "./interpreter";
+import {Decl, Func, isVarDecl} from "./interpreter";
 import {Block} from "./Block";
 import {EditableLabel} from "./EditableLabel";
 import {Lens, map, push, view} from "./lens";
+import {nextId} from "./utils";
 
 type Props = {
   func: Lens<Func>;
@@ -12,9 +13,9 @@ type Props = {
 
 export function Function(props: Props) {
   const {func, funcs} = props;
-  const addParam = () => push(view("params", func), {name: ""});
+  const addParam = () => push(view("params", func), {id: nextId(), name: ""});
   const addBlock = () => push(view("body", func), {type: "empty"});
-  const vars = func.current.body.filter(block => block.type === "var-decl") as VarDecl[];
+  const vars: Decl[] = [...func.current.body.filter(isVarDecl), ...func.current.params];
 
   return (
     <div className="Function">

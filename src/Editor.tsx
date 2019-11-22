@@ -5,14 +5,14 @@ import {useKey} from "react-use";
 import * as is from "electron-is";
 import {TitleBar as WindowsTitleBar} from "electron-react-titlebar";
 import {interpret} from "./interpreter";
-import {createFunc, Position} from "./utils";
+import {createFunc, nextId, Position} from "./utils";
 import {Menu} from "./Menu";
 import {Function} from "./Function";
 import {lens, map, push} from "./lens";
 
 const main = createFunc("main", []);
 const prompt = createFunc("prompt", []);
-const print = createFunc("print", [{name: ""}]);
+const print = createFunc("print", [{id: nextId(), name: ""}]);
 
 export function Editor() {
   const [editorMenuPosition, setEditorMenuPosition] = React.useState<Position | null>(null);

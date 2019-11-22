@@ -1,16 +1,17 @@
 // @ts-ignore
 import * as prompt from "electron-prompt";
 
-export type Param = {
-  name: string;
-};
-
-export type Func = {
+export interface Decl {
   id: number;
   name: string;
+}
+
+export interface Param extends Decl {}
+
+export interface Func extends Decl {
   params: Param[];
   body: BlockData[];
-};
+}
 
 export type Empty = {type: "empty"};
 export type Call = {type: "call"; funcId: number; args: Expr[]};
@@ -19,6 +20,10 @@ export type VarDecl = {type: "var-decl"; id: number; name: string; value: Expr};
 
 export type Expr = Empty | Var | Call;
 export type BlockData = Empty | Call | VarDecl;
+
+export function isVarDecl(block: BlockData): block is VarDecl {
+  return block.type === "var-decl";
+}
 
 export async function interpret(blocks: BlockData[], funcs: Func[], vars: any = {}): Promise<unknown> {
   return blocks.reduce<unknown>(async (prev, curr) => {

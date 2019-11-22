@@ -1,5 +1,5 @@
 import * as React from "react";
-import {BlockData, Expr, Func, VarDecl} from "./interpreter";
+import {BlockData, Decl, Expr, Func, VarDecl} from "./interpreter";
 import {AutocompleteField} from "./AutocompleteField";
 import {Lens, view} from "./lens";
 import {nextId} from "./utils";
@@ -8,7 +8,7 @@ import {Expression} from "./Expression";
 type Props = {
   data: Lens<BlockData>;
   funcs: Func[];
-  vars: VarDecl[];
+  vars: Decl[];
 };
 
 export function Block(props: Props) {
