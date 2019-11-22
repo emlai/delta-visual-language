@@ -48,7 +48,7 @@ async function evaluate(expr: Expr, funcs: Func[], vars: any): Promise<unknown> 
       const func = funcs.find(f => f.id === expr.funcId);
       if (!func) throw Error(`Function ID "${expr.funcId}" not found`);
 
-      const args = [];
+      const args: any[] = [];
       for (const arg of expr.args) {
         args.push(await evaluate(arg, funcs, vars));
       }
@@ -59,7 +59,8 @@ async function evaluate(expr: Expr, funcs: Func[], vars: any): Promise<unknown> 
         case "print":
           return alert(args);
         default:
-          return interpret(func.body, funcs, vars);
+          const params = Object.fromEntries(func.params.map((param, index) => [param.id, args[index]]));
+          return interpret(func.body, funcs, {...vars, ...params});
       }
     case "var":
       return vars[expr.varId];

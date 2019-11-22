@@ -24,8 +24,8 @@ export function Function(props: Props) {
           <EditableLabel value={view("name", func)} />
         </code>
         {map(view("params", func), (param, index) => (
-          <code>
-            <EditableLabel value={view("name", param)} key={index} />
+          <code key={index}>
+            <EditableLabel value={view("name", param)} />
           </code>
         ))}
         {func.current.name !== "main" && (
