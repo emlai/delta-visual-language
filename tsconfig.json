@@ -6,6 +6,7 @@
     "inlineSourceMap": true,
     "inlineSources": true,
     "noImplicitAny": true,
+    "noImplicitReturns": true,
     "strict": true
   }
 }

@@ -1,7 +1,8 @@
 import * as React from "react";
-import {Call, Decl, Expr, isFunc} from "./interpreter";
-import {AutocompleteField} from "./AutocompleteField";
+import {useState} from "react";
+import {Call, Decl, Expr} from "./interpreter";
 import {Lens, map, view} from "./lens";
+import {ExprField} from "./ExprField";
 
 type Props = {
   expr: Lens<Expr>;
@@ -14,18 +15,7 @@ export function Expression(props: Props) {
 
   switch (expr.type) {
     case "empty":
-      const select = (name: string) => {
-        const decl = decls.find(decl => decl.name === name);
-        if (!decl) throw Error(`Variable name "${name}" not found`);
-
-        if (isFunc(decl)) {
-          props.expr.set({type: "call", funcId: decl.id, args: decl.params.map(() => ({type: "empty"}))});
-        } else {
-          props.expr.set({type: "var", varId: decl.id});
-        }
-      };
-
-      return <AutocompleteField completions={decls.map(decl => decl.name)} select={select} />;
+      return <ExprField {...props} />;
 
     case "var":
       const variable = decls.find(decl => decl.id === expr.varId);
@@ -41,9 +31,23 @@ export function Expression(props: Props) {
         <div className="Call">
           <code>{func.name}</code>
           {map(view("args", props.expr as Lens<Call>), (arg, index) => (
-            <Expression expr={arg} decls={decls} key={index} />
+            <ExprSlot key={index} expr={arg} decls={decls} />
           ))}
         </div>
       );
   }
+}
+
+function ExprSlot(props: Props) {
+  const [editing, setEditing] = useState(false);
+
+  if (editing) {
+    return <ExprField {...props} cancel={() => setEditing(false)} />;
+  }
+
+  return (
+    <div className="ExprSlot" onClick={() => setEditing(true)}>
+      <Expression expr={props.expr} decls={props.decls} />
+    </div>
+  );
 }

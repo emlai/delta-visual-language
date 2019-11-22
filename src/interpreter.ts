@@ -44,6 +44,8 @@ export async function interpret(blocks: BlockData[], funcs: Func[], vars: any = 
 
 async function evaluate(expr: Expr, funcs: Func[], vars: any): Promise<unknown> {
   switch (expr.type) {
+    case "empty":
+      return;
     case "call":
       const func = funcs.find(f => f.id === expr.funcId);
       if (!func) throw Error(`Function ID "${expr.funcId}" not found`);

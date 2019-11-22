@@ -14,19 +14,21 @@ code {
   font-family: Consolas, monospace;
 }
 
-input {
+input,
+.ExprSlot {
   width: 100%;
   background: #000;
   color: inherit;
   border: none;
   border-radius: 2px;
   outline: none;
-  padding: 5px;
+  padding: 3px 6px;
   font-family: inherit;
   font-size: inherit;
 }
 
-.Block input {
+.Block input,
+.Block .ExprSlot {
   background: #111;
 }
 
@@ -102,7 +104,7 @@ input {
 .Block {
   display: inline-block;
   background: #222;
-  padding: 7px;
+  padding: 6px;
   border-radius: 2px;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 1);
 }
@@ -153,5 +155,5 @@ input {
 .FunctionHeader > * + *,
 .Call > * + *,
 .VarDecl > * + * {
-  margin-left: 5px;
+  margin-left: 7px;
 }
