@@ -7,7 +7,7 @@ import {interpret} from "./interpreter";
 import {createBuiltinFunc, createFunc, nextId} from "./utils";
 import {Menu} from "./Menu";
 import {Function} from "./Function";
-import {lens, map, push, remove} from "./lens";
+import {Lens} from "./lens";
 import {useContextMenu} from "./context-menu";
 
 const main = createBuiltinFunc("main", []);
@@ -15,12 +15,12 @@ const prompt = createBuiltinFunc("prompt", []);
 const print = createBuiltinFunc("print", [{id: nextId(), name: ""}]);
 
 export function Editor() {
-  const funcs = lens(useLocalStorage("delta-project", [main]));
+  const funcs = Lens(useLocalStorage("delta-project", [main]));
   const builtinFuncs = [prompt, print];
   const decls = funcs.current.concat(builtinFuncs);
 
   function addFunction() {
-    push(funcs, createFunc("", []));
+    funcs.push(createFunc("", []));
   }
 
   function RunButton() {
@@ -54,8 +54,8 @@ export function Editor() {
       )}
 
       <ContextMenuTrigger className="editableArea">
-        {map(funcs, (func, index) => (
-          <Function func={func} decls={decls} deleteFunc={() => remove(funcs, index)} key={index} />
+        {funcs.map((func, index) => (
+          <Function func={func} decls={decls} deleteFunc={() => funcs.remove(index)} key={index} />
         ))}
       </ContextMenuTrigger>
     </div>

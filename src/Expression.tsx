@@ -1,7 +1,7 @@
 import * as React from "react";
 import {useState} from "react";
 import {Call, Decl, Expr} from "./interpreter";
-import {Lens, map, view} from "./lens";
+import {Lens} from "./lens";
 import {ExprField} from "./ExprField";
 
 type Props = {
@@ -30,7 +30,7 @@ export function Expression(props: Props) {
       return (
         <div className="Call">
           <code>{func.name}</code>
-          {map(view("args", props.expr as Lens<Call>), (arg, index) => (
+          {(props.expr as Lens<Call>).view("args").map((arg, index) => (
             <ExprSlot key={index} expr={arg} decls={decls} />
           ))}
         </div>

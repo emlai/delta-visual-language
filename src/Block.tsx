@@ -1,7 +1,7 @@
 import * as React from "react";
 import {BlockData, Decl, Expr, isFunc, VarDecl} from "./interpreter";
 import {AutocompleteField} from "./AutocompleteField";
-import {Lens, view} from "./lens";
+import {Lens} from "./lens";
 import {nextId} from "./utils";
 import {Expression} from "./Expression";
 import {Menu} from "./Menu";
@@ -39,7 +39,7 @@ export function Block(props: Props) {
           <div className="VarDecl">
             <code>{block.name}</code>
             <div className="Arrow">{"←"}</div>
-            <Expression expr={view("value", props.data as Lens<VarDecl>)} decls={props.decls} />
+            <Expression expr={(props.data as Lens<VarDecl>).view("value")} decls={props.decls} />
           </div>
         );
     }

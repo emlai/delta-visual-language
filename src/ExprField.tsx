@@ -1,7 +1,7 @@
 import * as React from "react";
 import {useState} from "react";
 import {Decl, Expr, isFunc} from "./interpreter";
-import {Lens, lens} from "./lens";
+import {Lens} from "./lens";
 import {Menu} from "./Menu";
 
 type Props = {
@@ -22,7 +22,7 @@ export function ExprField(props: Props) {
     }
   }
 
-  const value = lens(useState(getName(props.expr.current)));
+  const value = Lens(useState(getName(props.expr.current)));
 
   const select = (name: string) => {
     const decl = props.decls.find(decl => decl.name === name);

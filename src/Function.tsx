@@ -3,7 +3,7 @@ import {IoMdAdd} from "react-icons/io";
 import {Decl, Func, isVarDecl} from "./interpreter";
 import {Block} from "./Block";
 import {EditableLabel} from "./EditableLabel";
-import {Lens, map, push, remove, view} from "./lens";
+import {Lens} from "./lens";
 import {nextId} from "./utils";
 import {useContextMenu} from "./context-menu";
 import {Menu} from "./Menu";
@@ -16,8 +16,8 @@ type Props = {
 
 export function Function(props: Props) {
   const {func} = props;
-  const addParam = () => push(view("params", func), {id: nextId(), name: ""});
-  const addBlock = () => push(view("body", func), {type: "empty"});
+  const addParam = () => func.view("params").push({id: nextId(), name: ""});
+  const addBlock = () => func.view("body").push({type: "empty"});
   const decls = props.decls.concat(func.current.body.filter(isVarDecl)).concat(func.current.params);
 
   const ContextMenuTrigger = useContextMenu(
@@ -28,11 +28,11 @@ export function Function(props: Props) {
     <div className="Function">
       <ContextMenuTrigger className="FunctionHeader">
         <code className="FunctionName">
-          <EditableLabel value={view("name", func)} />
+          <EditableLabel value={func.view("name")} />
         </code>
-        {map(view("params", func), (param, index) => (
+        {func.view("params").map((param, index) => (
           <code key={index}>
-            <EditableLabel value={view("name", param)} />
+            <EditableLabel value={param.view("name")} />
           </code>
         ))}
         {func.current.name !== "main" && (
@@ -41,8 +41,8 @@ export function Function(props: Props) {
           </a>
         )}
       </ContextMenuTrigger>
-      {map(view("body", func), (block, index, blocks) => (
-        <Block data={block} decls={decls} deleteBlock={() => remove(blocks, index)} key={index} />
+      {func.view("body").map((block, index, blocks) => (
+        <Block data={block} decls={decls} deleteBlock={() => blocks.remove(index)} key={index} />
       ))}
       <a href="#" className="Block AddBlockButton" onClick={addBlock}>
         <IoMdAdd />

@@ -1,7 +1,7 @@
 import * as React from "react";
 import {useState} from "react";
 import {Menu} from "./Menu";
-import {lens} from "./lens";
+import {Lens} from "./lens";
 
 type Props<T> = {
   completions?: Array<T>;
@@ -9,7 +9,7 @@ type Props<T> = {
 };
 
 export function AutocompleteField<T extends string>(props: Props<T>) {
-  const value = lens(useState(""));
+  const value = Lens(useState(""));
 
   const completions =
     value.current && props.completions
