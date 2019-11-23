@@ -25,27 +25,38 @@ input,
   padding: 3px 6px;
   font-family: inherit;
   font-size: inherit;
-}
 
-.Block input,
-.Block .ExprSlot {
-  background: #111;
+  .Block & {
+    background: #111;
+  }
 }
 
 .electron-app-title-bar {
   background: #222 !important;
   border-bottom: none !important;
+
+  &.non-windows {
+    height: 38px;
+    -webkit-app-region: drag;
+  }
 }
 
-.electron-app-title-bar.non-windows {
-  height: 38px;
-  -webkit-app-region: drag;
-}
+.RunButton {
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  -webkit-app-region: no-drag;
 
-.electron-app-title-bar.non-windows .RunButton {
-  position: absolute;
-  left: 79px;
-  height: inherit;
+  &:hover {
+    background: #444;
+  }
+
+  .electron-app-title-bar.non-windows & {
+    position: absolute;
+    left: 79px;
+    height: inherit;
+  }
 }
 
 .Editor {
@@ -78,27 +89,15 @@ input,
 .AddParamButton {
   line-height: 0;
   color: #555;
-}
 
-.Function:not(:hover) .AddParamButton {
-  visibility: hidden;
-}
+  &:hover,
+  &:focus {
+    color: inherit;
+  }
 
-.AddParamButton:hover,
-.AddParamButton:focus {
-  color: inherit;
-}
-
-.RunButton {
-  color: white;
-  display: flex;
-  align-items: center;
-  padding: 0 10px;
-  -webkit-app-region: no-drag;
-}
-
-.RunButton:hover {
-  background: #444;
+  .Function:not(:hover) & {
+    visibility: hidden;
+  }
 }
 
 .Block {
@@ -107,10 +106,10 @@ input,
   padding: 6px;
   border-radius: 2px;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 1);
-}
 
-.Block + .Block {
-  margin-top: 5px;
+  & + & {
+    margin-top: 5px;
+  }
 }
 
 .MenuOverlay {
@@ -130,21 +129,22 @@ input,
   color: inherit;
   text-decoration: inherit;
   outline: none;
-}
 
-.MenuItem:hover,
-.MenuItem:focus {
-  background: #333;
+  &:hover,
+  &:focus {
+    background: #333;
+  }
 }
 
 .AddBlockButton {
+  @extend .Block;
   line-height: 0;
   color: #555;
-}
 
-.AddBlockButton:not(:hover):not(:focus) {
-  background: transparent;
-  box-shadow: none;
+  &:not(:hover):not(:focus) {
+    background: transparent;
+    box-shadow: none;
+  }
 }
 
 .Call,

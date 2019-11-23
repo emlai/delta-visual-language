@@ -44,7 +44,7 @@ export function Function(props: Props) {
       {func.body.map((block, index, blocks) => (
         <Block data={block} decls={decls} deleteBlock={() => blocks.remove(index)} key={index} />
       ))}
-      <a href="#" className="Block AddBlockButton" onClick={addBlock}>
+      <a href="#" className="AddBlockButton" onClick={addBlock}>
         <IoMdAdd />
       </a>
     </div>
