@@ -1,4 +1,5 @@
 import {app, BrowserWindow} from "electron";
+import installExtension, {REACT_DEVELOPER_TOOLS} from "electron-devtools-installer";
 
 require("electron-reload")([__dirname, __dirname + "/../src/*.css"]);
 
@@ -33,3 +34,5 @@ app.on("activate", () => {
     createWindow();
   }
 });
+
+installExtension(REACT_DEVELOPER_TOOLS);
