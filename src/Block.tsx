@@ -39,7 +39,7 @@ export function Block(props: Props) {
           <div className="VarDecl">
             <code>{block.name}</code>
             <div className="Arrow">{"←"}</div>
-            <Expression expr={(props.data as Lens<VarDecl>).view("value")} decls={props.decls} />
+            <Expression expr={(props.data as Lens<VarDecl>).value} decls={props.decls} />
           </div>
         );
     }

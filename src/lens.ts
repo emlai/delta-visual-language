@@ -9,9 +9,19 @@ class _Lens<T> {
 
     this.current = current;
     this.set = set;
+
+    return new Proxy(this, {
+      get(target, prop) {
+        if (prop in target) {
+          return target[prop as keyof typeof target];
+        } else {
+          return target.prop(prop as keyof T);
+        }
+      }
+    });
   }
 
-  view<T, K extends keyof T>(this: Lens<T>, key: K): Lens<T[K]> {
+  prop<T, K extends keyof T>(this: _Lens<T>, key: K): Lens<T[K]> {
     return Lens([this.current[key], (value: T[K]) => this.set({...this.current, [key]: value})]);
   }
 
@@ -36,5 +46,5 @@ class _Lens<T> {
 }
 
 // https://stackoverflow.com/a/48362715/3425536
-export type Lens<T> = _Lens<T>;
+export type Lens<T> = _Lens<T> & {[key in keyof T]: Lens<T[key]>};
 export const Lens = _Lens as typeof _Lens & (<T>([current, set]: [T, (value: T) => void]) => Lens<T>);

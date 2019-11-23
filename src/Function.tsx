@@ -16,8 +16,8 @@ type Props = {
 
 export function Function(props: Props) {
   const {func} = props;
-  const addParam = () => func.view("params").push({id: nextId(), name: ""});
-  const addBlock = () => func.view("body").push({type: "empty"});
+  const addParam = () => func.params.push({id: nextId(), name: ""});
+  const addBlock = () => func.body.push({type: "empty"});
   const decls = props.decls.concat(func.current.body.filter(isVarDecl)).concat(func.current.params);
 
   const ContextMenuTrigger = useContextMenu(
@@ -28,11 +28,11 @@ export function Function(props: Props) {
     <div className="Function">
       <ContextMenuTrigger className="FunctionHeader">
         <code className="FunctionName">
-          <EditableLabel value={func.view("name")} />
+          <EditableLabel value={func.name} />
         </code>
-        {func.view("params").map((param, index) => (
+        {func.params.map((param, index) => (
           <code key={index}>
-            <EditableLabel value={param.view("name")} />
+            <EditableLabel value={param.name} />
           </code>
         ))}
         {func.current.name !== "main" && (
@@ -41,7 +41,7 @@ export function Function(props: Props) {
           </a>
         )}
       </ContextMenuTrigger>
-      {func.view("body").map((block, index, blocks) => (
+      {func.body.map((block, index, blocks) => (
         <Block data={block} decls={decls} deleteBlock={() => blocks.remove(index)} key={index} />
       ))}
       <a href="#" className="Block AddBlockButton" onClick={addBlock}>

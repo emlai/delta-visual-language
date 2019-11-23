@@ -30,7 +30,7 @@ export function Expression(props: Props) {
       return (
         <div className="Call">
           <code>{func.name}</code>
-          {(props.expr as Lens<Call>).view("args").map((arg, index) => (
+          {(props.expr as Lens<Call>).args.map((arg, index) => (
             <ExprSlot key={index} expr={arg} decls={decls} />
           ))}
         </div>
