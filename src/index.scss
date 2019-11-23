@@ -22,8 +22,7 @@ code {
   font-family: Consolas, monospace;
 }
 
-input,
-.ExprSlot {
+input {
   width: 100%;
   background: $background-inset-color;
   color: inherit;
@@ -36,6 +35,16 @@ input,
 
   .Block & {
     background: $block-inset-color;
+  }
+}
+
+.ExprSlot {
+  @extend input;
+  width: auto;
+
+  input {
+    padding-top: 0;
+    padding-bottom: 0;
   }
 }
 
@@ -158,7 +167,8 @@ input,
 }
 
 .Call,
-.VarDecl {
+.VarDecl,
+.Compare {
   display: flex;
   align-items: center;
 }
@@ -167,4 +177,11 @@ input,
 .Call > * + *,
 .VarDecl > * + * {
   margin-left: 7px;
+}
+
+.Call,
+.VarDecl {
+  & > .ExprSlot {
+    width: 100%;
+  }
 }

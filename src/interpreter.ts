@@ -17,8 +17,9 @@ export type Empty = {type: "empty"};
 export type Call = {type: "call"; funcId: string; args: Expr[]};
 export type Var = {type: "var"; varId: string};
 export type VarDecl = {type: "var-decl"; id: string; name: string; value: Expr};
+export type Compare = {type: "compare"; left: Expr; right: Expr};
 
-export type Expr = Empty | Var | Call;
+export type Expr = Empty | Var | Call | Compare;
 export type BlockData = Empty | Call | VarDecl;
 
 export function isVarDecl(block: BlockData): block is VarDecl {
@@ -66,5 +67,9 @@ async function evaluate(expr: Expr, funcs: Func[], vars: any): Promise<unknown> 
       }
     case "var":
       return vars[expr.varId];
+    case "compare":
+      const left = await evaluate(expr.left, funcs, vars);
+      const right = await evaluate(expr.right, funcs, vars);
+      return left === right;
   }
 }

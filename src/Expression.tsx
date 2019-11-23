@@ -1,6 +1,6 @@
 import * as React from "react";
 import {useState} from "react";
-import {Call, Decl, Expr} from "./interpreter";
+import {Call, Compare, Decl, Expr} from "./interpreter";
 import {Lens} from "./lens";
 import {ExprEditField} from "./ExprEditField";
 
@@ -36,6 +36,15 @@ export function Expression(props: Props) {
           ))}
         </div>
       );
+
+    case "compare":
+      return (
+        <div className="Compare">
+          <ExprSlot expr={(props.expr as Lens<Compare>).left} decls={decls} />
+          {"="}
+          <ExprSlot expr={(props.expr as Lens<Compare>).right} decls={decls} />
+        </div>
+      );
   }
 }
 
@@ -46,8 +55,14 @@ export function ExprSlot(props: Props) {
     return <ExprEditField {...props} cancel={() => setEditing(false)} />;
   }
 
+  const onClick = (event: React.MouseEvent) => {
+    if (event.target === event.currentTarget) {
+      setEditing(true);
+    }
+  };
+
   return (
-    <div className="ExprSlot" onClick={() => setEditing(true)}>
+    <div className="ExprSlot" onClick={onClick}>
       <Expression expr={props.expr} decls={props.decls} />
     </div>
   );

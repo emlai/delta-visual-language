@@ -20,6 +20,8 @@ export function ExprEditField(props: Props) {
         return props.decls.find(decl => decl.id === expr.varId)!.name;
       case "call":
         return props.decls.find(decl => decl.id === expr.funcId)!.name;
+      case "compare":
+        return "";
     }
   }
 
@@ -46,11 +48,18 @@ export function ExprEditField(props: Props) {
       : [];
 
   function onKeyDown(event: React.KeyboardEvent) {
-    if (event.key === "Enter" || event.key === "=") {
-      event.preventDefault();
-      select(value.current);
-    } else if (event.key === "Escape") {
-      props.cancel?.();
+    switch (event.key) {
+      case "Enter":
+        event.preventDefault();
+        select(value.current);
+        break;
+      case "Escape":
+        props.cancel?.();
+        break;
+      case "=":
+        event.preventDefault();
+        props.expr.set({type: "compare", left: {type: "empty"}, right: {type: "empty"}});
+        break;
     }
   }
 
