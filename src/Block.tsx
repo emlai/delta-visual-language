@@ -37,8 +37,8 @@ export function Block(props: Props) {
       case "var-decl":
         return (
           <div className="VarDecl">
-            <code>{block.name}</code>
-            <div className="Arrow">{"←"}</div>
+            <div>{block.name}</div>
+            <span>{"←"}</span>
             <ExprSlot expr={(props.data as Lens<VarDecl>).value} decls={props.decls} />
           </div>
         );
@@ -46,7 +46,7 @@ export function Block(props: Props) {
   }
 
   const ContextMenuTrigger = useContextMenu(
-    <Menu items={[{value: "deleteBlock", label: "Delete block"}]} select={props.deleteBlock} />
+    <Menu items={[{value: "deleteBlock", label: <span>Delete block</span>}]} select={props.deleteBlock} />
   );
 
   return (

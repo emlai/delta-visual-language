@@ -21,19 +21,15 @@ export function Function(props: Props) {
   const decls = props.decls.concat(func.current.body.filter(isVarDecl)).concat(func.current.params);
 
   const ContextMenuTrigger = useContextMenu(
-    <Menu items={[{value: "deleteFunc", label: "Delete function"}]} select={props.deleteFunc} />
+    <Menu items={[{value: "deleteFunc", label: <span>Delete function</span>}]} select={props.deleteFunc} />
   );
 
   return (
     <div className="Function">
       <ContextMenuTrigger className="FunctionHeader">
-        <code className="FunctionName">
-          <EditableLabel value={func.name} />
-        </code>
+        <EditableLabel value={func.name} />
         {func.params.map((param, index) => (
-          <code key={index}>
-            <EditableLabel value={param.name} />
-          </code>
+          <EditableLabel value={param.name} key={index} />
         ))}
         {func.current.name !== "main" && (
           <a href="#" className="AddParamButton" onClick={addParam}>

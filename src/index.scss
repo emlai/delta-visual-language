@@ -14,12 +14,12 @@ body {
   margin: 0;
   background: $background-color;
   color: $text-color;
-  font-family: sans-serif;
+  font-family: Consolas, monospace;
   font-size: 12px;
 }
 
-code {
-  font-family: Consolas, monospace;
+span {
+  font-family: sans-serif;
 }
 
 input {

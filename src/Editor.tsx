@@ -37,7 +37,7 @@ export function Editor() {
   }
 
   const ContextMenuTrigger = useContextMenu(
-    <Menu items={[{value: "addFunction", label: "Add function"}]} select={addFunction} />
+    <Menu items={[{value: "addFunction", label: <span>Add function</span>}]} select={addFunction} />
   );
 
   return (

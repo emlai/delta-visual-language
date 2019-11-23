@@ -44,7 +44,7 @@ export function ExprEditField(props: Props) {
     value.current && props.decls
       ? props.decls
           .filter(decl => decl.name.includes(value.current))
-          .map(decl => ({value: decl.name, label: <code>{decl.name}</code>}))
+          .map(decl => ({value: decl.name, label: decl.name}))
       : [];
 
   function onKeyDown(event: React.KeyboardEvent) {
@@ -65,14 +65,12 @@ export function ExprEditField(props: Props) {
 
   return (
     <div className="ExprEditField">
-      <code>
-        <input
-          value={value.current}
-          onChange={event => value.set(event.target.value.trimLeft())}
-          onKeyDown={onKeyDown}
-          autoFocus={true}
-        />
-      </code>
+      <input
+        value={value.current}
+        onChange={event => value.set(event.target.value.trimLeft())}
+        onKeyDown={onKeyDown}
+        autoFocus={true}
+      />
       <div className="MenuOverlay">
         <Menu items={completions} select={select} />
       </div>

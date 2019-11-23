@@ -22,7 +22,7 @@ export function Expression(props: Props) {
       const variable = decls.find(decl => decl.id === expr.varId);
       if (!variable) throw Error(`Variable ID "${expr.varId}" not found`);
 
-      return <code>{variable.name}</code>;
+      return <>{variable.name}</>;
 
     case "call":
       const func = decls.find(decl => decl.id === expr.funcId);
@@ -30,7 +30,7 @@ export function Expression(props: Props) {
 
       return (
         <div className="Call">
-          <code>{func.name}</code>
+          <div>{func.name}</div>
           {(props.expr as Lens<Call>).args.map((arg, index) => (
             <ExprSlot key={index} expr={arg} decls={decls} />
           ))}
