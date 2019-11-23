@@ -38,7 +38,7 @@ export function Expression(props: Props) {
   }
 }
 
-function ExprSlot(props: Props) {
+export function ExprSlot(props: Props) {
   const [editing, setEditing] = useState(false);
 
   if (editing) {

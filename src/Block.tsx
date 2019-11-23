@@ -3,7 +3,7 @@ import {BlockData, Decl, Expr, isFunc, VarDecl} from "./interpreter";
 import {AutocompleteField} from "./AutocompleteField";
 import {Lens} from "./lens";
 import {nextId} from "./utils";
-import {Expression} from "./Expression";
+import {Expression, ExprSlot} from "./Expression";
 import {Menu} from "./Menu";
 import {useContextMenu} from "./context-menu";
 
@@ -39,7 +39,7 @@ export function Block(props: Props) {
           <div className="VarDecl">
             <code>{block.name}</code>
             <div className="Arrow">{"←"}</div>
-            <Expression expr={(props.data as Lens<VarDecl>).value} decls={props.decls} />
+            <ExprSlot expr={(props.data as Lens<VarDecl>).value} decls={props.decls} />
           </div>
         );
     }
