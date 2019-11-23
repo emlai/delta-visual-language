@@ -15,7 +15,8 @@ export function Expression(props: Props) {
 
   switch (expr.type) {
     case "empty":
-      return <ExprField {...props} />;
+      console.assert(false);
+      return null;
 
     case "var":
       const variable = decls.find(decl => decl.id === expr.varId);
@@ -41,7 +42,7 @@ export function Expression(props: Props) {
 export function ExprSlot(props: Props) {
   const [editing, setEditing] = useState(false);
 
-  if (editing) {
+  if (editing || props.expr.type.current === "empty") {
     return <ExprField {...props} cancel={() => setEditing(false)} />;
   }
 
