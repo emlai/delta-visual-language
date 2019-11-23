@@ -1,10 +1,12 @@
 $background-color: #111;
+$background-highlight-color: #1a1a1a;
 $background-inset-color: #000;
 $block-color: #282828;
 $block-inset-color: $background-color;
 $block-highlight-color: #444;
 $text-color: #eee;
 $text-deemphasized-color: #555;
+$text-deemphasized-color-2: #8e8e8e;
 
 * {
   box-sizing: border-box;
@@ -20,6 +22,7 @@ body {
 
 span {
   font-family: sans-serif;
+  user-select: none;
 }
 
 input {
@@ -117,12 +120,21 @@ input {
   }
 }
 
+.Blocks {
+  height: 100%;
+  background: $background-highlight-color;
+}
+
 .Block {
-  display: inline-block;
+  width: 100%;
+  display: block;
   background: $block-color;
-  padding: 7px;
-  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 1);
-  border-top: 1px solid $block-inset-color;
+  padding: 6px;
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.3);
+
+  &:not(:first-child) {
+    border-top: 1px solid $block-inset-color;
+  }
 }
 
 .MenuOverlay {
@@ -131,9 +143,8 @@ input {
 
 .Menu {
   background: $block-color;
-  border-radius: 2px;
   overflow: hidden;
-  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 1);
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.3);
 }
 
 .MenuItem {
@@ -168,14 +179,16 @@ input {
 
 .Call,
 .VarDecl,
-.Compare {
+.Compare,
+.If {
   display: flex;
   align-items: center;
 }
 
 .FunctionHeader > * + *,
 .Call > * + *,
-.VarDecl > * + * {
+.VarDecl > * + *,
+.If > * + * {
   margin-left: 7px;
 }
 
@@ -183,5 +196,52 @@ input {
 .VarDecl {
   & > .ExprSlot {
     width: 100%;
+  }
+}
+
+.Condition {
+  width: 100%;
+}
+
+.IfBody {
+  width: 420px;
+  background: $background-color;
+
+  .Lines {
+    position: relative;
+
+    > svg {
+      display: block;
+      stroke-width: 2;
+      stroke: $block-color;
+      fill: none;
+    }
+
+    > .Labels {
+      display: flex;
+      align-items: center;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+
+      > span {
+        position: absolute;
+        background: $block-color;
+        color: $text-deemphasized-color-2;
+        padding: 2px 5px;
+        border-radius: 2px;
+      }
+    }
+  }
+
+  .ThenElse {
+    display: flex;
+    justify-content: space-between;
+
+    .Then,
+    .Else {
+      width: 200px;
+    }
   }
 }

@@ -17,10 +17,11 @@ export type Empty = {type: "empty"};
 export type Call = {type: "call"; funcId: string; args: Expr[]};
 export type Var = {type: "var"; varId: string};
 export type VarDecl = {type: "var-decl"; id: string; name: string; value: Expr};
+export type If = {type: "if"; condition: Expr; then: BlockData[]; else: BlockData[]};
 export type Compare = {type: "compare"; left: Expr; right: Expr};
 
 export type Expr = Empty | Var | Call | Compare;
-export type BlockData = Empty | Call | VarDecl;
+export type BlockData = Empty | Call | VarDecl | If;
 
 export function isVarDecl(block: BlockData): block is VarDecl {
   return block.type === "var-decl";
@@ -39,6 +40,9 @@ export async function interpret(blocks: BlockData[], funcs: Func[], vars: any = 
         return evaluate(curr, funcs, vars);
       case "var-decl":
         return (vars[curr.id] = await evaluate(curr.value, funcs, vars));
+      case "if":
+        const condition = await evaluate(curr.condition, funcs, vars);
+        return interpret(condition ? curr.then : curr.else, funcs, vars);
     }
   }, undefined);
 }

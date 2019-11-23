@@ -40,12 +40,12 @@ export function ExprEditField(props: Props) {
       }
     });
 
-  const completions =
-    value.current && props.decls
-      ? props.decls
-          .filter(decl => decl.name.includes(value.current))
-          .map(decl => ({value: decl.name, label: decl.name}))
-      : [];
+  const completions = value.current
+    ? props.decls
+        .filter(decl => decl.name.includes(value.current))
+        .map(decl => ({value: decl.name, label: decl.name}))
+        .concat({value: "if", label: "if"})
+    : [];
 
   function onKeyDown(event: React.KeyboardEvent) {
     switch (event.key) {

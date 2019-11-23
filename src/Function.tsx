@@ -1,7 +1,7 @@
 import * as React from "react";
 import {IoMdAdd} from "react-icons/io";
 import {Decl, Func, isVarDecl} from "./interpreter";
-import {Block} from "./Block";
+import {Blocks} from "./Block";
 import {EditableLabel} from "./EditableLabel";
 import {Lens} from "./lens";
 import {nextId} from "./utils";
@@ -17,7 +17,6 @@ type Props = {
 export function Function(props: Props) {
   const {func} = props;
   const addParam = () => func.params.push({id: nextId(), name: ""});
-  const addBlock = () => func.body.push({type: "empty"});
   const decls = props.decls.concat(func.current.body.filter(isVarDecl)).concat(func.current.params);
 
   const ContextMenuTrigger = useContextMenu(
@@ -37,12 +36,7 @@ export function Function(props: Props) {
           </a>
         )}
       </ContextMenuTrigger>
-      {func.body.map((block, index, blocks) => (
-        <Block data={block} decls={decls} deleteBlock={() => blocks.remove(index)} key={index} />
-      ))}
-      <a href="#" className="AddBlockButton" onClick={addBlock}>
-        <IoMdAdd />
-      </a>
+      <Blocks blocks={func.body} decls={decls} />
     </div>
   );
 }
