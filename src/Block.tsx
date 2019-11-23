@@ -1,11 +1,11 @@
 import * as React from "react";
 import {BlockData, Decl, Expr, isFunc, VarDecl} from "./interpreter";
-import {AutocompleteField} from "./AutocompleteField";
 import {Lens} from "./lens";
-import {nextId} from "./utils";
 import {Expression, ExprSlot} from "./Expression";
 import {Menu} from "./Menu";
 import {useContextMenu} from "./context-menu";
+import {ExprField} from "./ExprField";
+import {nextId} from "./utils";
 
 type Props = {
   data: Lens<BlockData>;
@@ -14,22 +14,22 @@ type Props = {
 };
 
 export function Block(props: Props) {
-  const select = (name: string) => {
-    const decl = props.decls.find(decl => decl.name === name);
-
-    if (decl && isFunc(decl)) {
-      props.data.set({type: "call", funcId: decl.id, args: decl.params.map(() => ({type: "empty"}))});
-    } else {
-      props.data.set({type: "var-decl", id: nextId(), name: name, value: {type: "empty"}});
-    }
-  };
-
   function BlockContent() {
     const block = props.data.current;
 
     switch (block.type) {
       case "empty":
-        return <AutocompleteField completions={props.decls.filter(isFunc).map(func => func.name)} select={select} />;
+        const select = (name: string) => {
+          const decl = props.decls.find(decl => decl.name === name);
+
+          if (decl && isFunc(decl)) {
+            props.data.set({type: "call", funcId: decl.id, args: decl.params.map(() => ({type: "empty"}))});
+          } else {
+            props.data.set({type: "var-decl", id: nextId(), name: name, value: {type: "empty"}});
+          }
+        };
+
+        return <ExprField expr={props.data as Lens<Expr>} decls={props.decls} select={select} />;
 
       case "call":
         return <Expression expr={props.data as Lens<Expr>} decls={props.decls} />;

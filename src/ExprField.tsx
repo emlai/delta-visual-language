@@ -7,6 +7,7 @@ import {Menu} from "./Menu";
 type Props = {
   expr: Lens<Expr>;
   decls: Decl[];
+  select?: (name: string) => void;
   cancel?: () => void;
 };
 
@@ -24,16 +25,18 @@ export function ExprField(props: Props) {
 
   const value = Lens(useState(getName(props.expr.current)));
 
-  const select = (name: string) => {
-    const decl = props.decls.find(decl => decl.name === name);
-    if (!decl) throw Error(`Variable name "${name}" not found`);
+  const select =
+    props.select ??
+    ((name: string) => {
+      const decl = props.decls.find(decl => decl.name === name);
+      if (!decl) throw Error(`Variable name "${name}" not found`);
 
-    if (isFunc(decl)) {
-      props.expr.set({type: "call", funcId: decl.id, args: decl.params.map(() => ({type: "empty"}))});
-    } else {
-      props.expr.set({type: "var", varId: decl.id});
-    }
-  };
+      if (isFunc(decl)) {
+        props.expr.set({type: "call", funcId: decl.id, args: decl.params.map(() => ({type: "empty"}))});
+      } else {
+        props.expr.set({type: "var", varId: decl.id});
+      }
+    });
 
   const completions =
     value.current && props.decls
@@ -52,7 +55,7 @@ export function ExprField(props: Props) {
   }
 
   return (
-    <div>
+    <div className="ExprField">
       <code>
         <input
           value={value.current}
