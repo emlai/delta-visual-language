@@ -1,11 +1,19 @@
+$background-color: #111;
+$background-inset-color: #000;
+$block-color: #222;
+$block-inset-color: $background-color;
+$block-highlight-color: #444;
+$text-color: #eee;
+$text-deemphasized-color: #555;
+
 * {
   box-sizing: border-box;
 }
 
 body {
   margin: 0;
-  background: #111;
-  color: #eee;
+  background: $background-color;
+  color: $text-color;
   font-family: sans-serif;
   font-size: 12px;
 }
@@ -17,7 +25,7 @@ code {
 input,
 .ExprSlot {
   width: 100%;
-  background: #000;
+  background: $background-inset-color;
   color: inherit;
   border: none;
   border-radius: 2px;
@@ -27,12 +35,12 @@ input,
   font-size: inherit;
 
   .Block & {
-    background: #111;
+    background: $block-inset-color;
   }
 }
 
 .electron-app-title-bar {
-  background: #222 !important;
+  background: $block-color !important;
   border-bottom: none !important;
 
   &.non-windows {
@@ -49,7 +57,7 @@ input,
   -webkit-app-region: no-drag;
 
   &:hover {
-    background: #444;
+    background: $block-highlight-color;
   }
 
   .electron-app-title-bar.non-windows & {
@@ -88,11 +96,11 @@ input,
 
 .AddParamButton {
   line-height: 0;
-  color: #555;
+  color: $text-deemphasized-color;
 
   &:hover,
   &:focus {
-    color: inherit;
+    color: $text-color;
   }
 
   .Function:not(:hover) & {
@@ -102,10 +110,10 @@ input,
 
 .Block {
   display: inline-block;
-  background: #222;
+  background: $block-color;
   padding: 7px;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 1);
-  border-top: 1px solid #111;
+  border-top: 1px solid $block-inset-color;
 }
 
 .MenuOverlay {
@@ -113,7 +121,7 @@ input,
 }
 
 .Menu {
-  background: #222;
+  background: $block-color;
   border-radius: 2px;
   overflow: hidden;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 1);
@@ -128,14 +136,19 @@ input,
 
   &:hover,
   &:focus {
-    background: #333;
+    background: $block-highlight-color;
   }
 }
 
 .AddBlockButton {
   @extend .Block;
   line-height: 0;
-  color: #555;
+  color: $text-deemphasized-color;
+
+  &:hover,
+  &:focus {
+    color: $text-color;
+  }
 
   &:not(:hover):not(:focus) {
     background: transparent;
