@@ -103,13 +103,9 @@ input,
 .Block {
   display: inline-block;
   background: #222;
-  padding: 6px;
-  border-radius: 2px;
+  padding: 7px;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 1);
-
-  & + & {
-    margin-top: 5px;
-  }
+  border-top: 1px solid #111;
 }
 
 .MenuOverlay {
@@ -144,6 +140,7 @@ input,
   &:not(:hover):not(:focus) {
     background: transparent;
     box-shadow: none;
+    border-top-color: transparent;
   }
 }
 
