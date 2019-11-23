@@ -4,7 +4,7 @@ import {Lens} from "./lens";
 import {Expression, ExprSlot} from "./Expression";
 import {Menu} from "./Menu";
 import {useContextMenu} from "./context-menu";
-import {ExprField} from "./ExprField";
+import {ExprEditField} from "./ExprEditField";
 import {nextId} from "./utils";
 
 type Props = {
@@ -29,7 +29,7 @@ export function Block(props: Props) {
           }
         };
 
-        return <ExprField expr={props.data as Lens<Expr>} decls={props.decls} select={select} />;
+        return <ExprEditField expr={props.data as Lens<Expr>} decls={props.decls} select={select} />;
 
       case "call":
         return <Expression expr={props.data as Lens<Expr>} decls={props.decls} />;

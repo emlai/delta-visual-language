@@ -11,7 +11,7 @@ type Props = {
   cancel?: () => void;
 };
 
-export function ExprField(props: Props) {
+export function ExprEditField(props: Props) {
   function getName(expr: Expr) {
     switch (expr.type) {
       case "empty":
@@ -55,7 +55,7 @@ export function ExprField(props: Props) {
   }
 
   return (
-    <div className="ExprField">
+    <div className="ExprEditField">
       <code>
         <input
           value={value.current}

@@ -2,7 +2,7 @@ import * as React from "react";
 import {useState} from "react";
 import {Call, Decl, Expr} from "./interpreter";
 import {Lens} from "./lens";
-import {ExprField} from "./ExprField";
+import {ExprEditField} from "./ExprEditField";
 
 type Props = {
   expr: Lens<Expr>;
@@ -43,7 +43,7 @@ export function ExprSlot(props: Props) {
   const [editing, setEditing] = useState(false);
 
   if (editing || props.expr.type.current === "empty") {
-    return <ExprField {...props} cancel={() => setEditing(false)} />;
+    return <ExprEditField {...props} cancel={() => setEditing(false)} />;
   }
 
   return (
