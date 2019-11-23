@@ -1,5 +1,3 @@
-import {replace} from "./utils";
-
 export type Lens<T> = {
   current: T;
   set: (value: T) => void;
@@ -18,7 +16,7 @@ export function view<T, K extends keyof T>(key: K, lens: Lens<T>): Lens<T[K]> {
 
 export function map<T, U>(array: Lens<T[]>, callback: (element: Lens<T>, index: number, array: Lens<T[]>) => U): U[] {
   return array.current.map((value, index) => {
-    const setter = (newValue: T) => array.set(replace(array.current, index, newValue));
+    const setter = (newValue: T) => replace(array, index, newValue);
     return callback(lens([value, setter]), index, array);
   });
 }
@@ -29,4 +27,8 @@ export function push<T, U extends T[]>(array: Lens<T[]>, element: U[number]) {
 
 export function remove<T>(array: Lens<T[]>, index: number) {
   array.set([...array.current.slice(0, index), ...array.current.slice(index + 1)]);
+}
+
+export function replace<T, U extends T[]>(array: Lens<T[]>, index: number, element: U[number]) {
+  array.set([...array.current.slice(0, index), element, ...array.current.slice(index + 1)]);
 }
