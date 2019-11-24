@@ -26,7 +26,7 @@ export function useContextMenu(content: ReactNode) {
   return (props: Props) => (
     <div {...props} onContextMenu={open} onClick={close}>
       {props.children}
-      {position && <div style={{position: "absolute", left: position.x, top: position.y}}>{content}</div>}
+      {position && <div style={{position: "absolute", left: position.x, top: position.y, zIndex: 1}}>{content}</div>}
     </div>
   );
 }

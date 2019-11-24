@@ -8,6 +8,8 @@ $text-color: #eee;
 $text-deemphasized-color: #555;
 $text-deemphasized-color-2: #8e8e8e;
 
+$block-height: 33px;
+
 * {
   box-sizing: border-box;
 }
@@ -94,7 +96,7 @@ input {
 .Function {
   display: flex;
   flex-direction: column;
-  width: 200px;
+  width: fit-content;
   height: fit-content;
   margin: 20px;
 }
@@ -124,16 +126,18 @@ input {
   background: $background-highlight-color;
 }
 
+.BlockWrapper {
+  background: $background-color;
+}
+
 .Block {
-  width: 100%;
+  height: $block-height;
+  width: 200px;
   display: block;
   background: $block-color;
   padding: 6px;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.3);
-
-  &:not(:first-child) {
-    border-top: 1px solid $block-inset-color;
-  }
+  border-top: 1px solid $block-inset-color;
 }
 
 .MenuOverlay {
@@ -169,7 +173,7 @@ input {
   }
 
   &:not(:hover) {
-    background: transparent;
+    background: $background-highlight-color;
     box-shadow: none;
     border-top-color: transparent;
   }
@@ -202,13 +206,13 @@ input {
 }
 
 .IfBody {
-  width: 420px;
   background: $background-color;
 
   .Lines {
     position: relative;
 
     > svg {
+      height: $block-height;
       display: block;
       stroke-width: 2;
       stroke: $block-color;
@@ -235,11 +239,9 @@ input {
 
   .ThenElse {
     display: flex;
-    justify-content: space-between;
 
-    .Then,
     .Else {
-      width: 200px;
+      margin-left: 20px;
     }
   }
 }

@@ -24,19 +24,21 @@ export function Function(props: Props) {
   );
 
   return (
-    <div className="Function">
-      <ContextMenuTrigger className="FunctionHeader">
-        <EditableLabel value={func.name} />
-        {func.params.map((param, index) => (
-          <EditableLabel value={param.name} key={index} />
-        ))}
-        {func.current.name !== "main" && (
-          <a href="#" className="AddParamButton" onClick={addParam}>
-            <IoMdAdd />
-          </a>
-        )}
-      </ContextMenuTrigger>
-      <Blocks blocks={func.body} decls={decls} />
+    <div className="FunctionWrapper">
+      <div className="Function">
+        <ContextMenuTrigger className="FunctionHeader">
+          <EditableLabel value={func.name} />
+          {func.params.map((param, index) => (
+            <EditableLabel value={param.name} key={index} />
+          ))}
+          {func.current.name !== "main" && (
+            <a href="#" className="AddParamButton" onClick={addParam}>
+              <IoMdAdd />
+            </a>
+          )}
+        </ContextMenuTrigger>
+        <Blocks blocks={func.body} decls={decls} />
+      </div>
     </div>
   );
 }

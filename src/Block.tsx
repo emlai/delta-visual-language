@@ -14,7 +14,7 @@ type Props = {
   decls: Decl[];
 };
 
-export function Block(props: Props) {
+export function BlockContent(props: Props) {
   const block = props.data.current;
 
   const ContextMenuTrigger = useContextMenu(
@@ -71,7 +71,7 @@ export function Block(props: Props) {
 
       const Lines = ({y0, y1}: {y0: number; y1: number}) => {
         return (
-          <svg width={420} height={30}>
+          <svg width={420} height={33}>
             <path d={`M${x0},${y0} C${x0},${y1} ${x1},${y0} ${x1},${y1}`} />
             <path d={`M${x0},${y0} C${x0},${y1} ${x2},${y0} ${x2},${y1}`} />
           </svg>
@@ -89,7 +89,7 @@ export function Block(props: Props) {
 
           <div className="IfBody">
             <div className="Lines">
-              <Lines y0={0} y1={30} />
+              <Lines y0={0} y1={33} />
               <div className="Labels">
                 <span style={{transform: `translateX(${x1 + (x0 - x1) / 2 - 15}px)`}}>then</span>
                 <span style={{transform: `translateX(${x0 + (x2 - x0) / 2 - 15}px)`}}>else</span>
@@ -104,12 +104,20 @@ export function Block(props: Props) {
               </div>
             </div>
             <div className="Lines">
-              <Lines y0={30} y1={0} />
+              <Lines y0={33} y1={0} />
             </div>
           </div>
         </>
       );
   }
+}
+
+export function Block(props: Props) {
+  return (
+    <div className="BlockWrapper">
+      <BlockContent {...props} />
+    </div>
+  );
 }
 
 export function Blocks(props: {blocks: Lens<BlockData[]>; decls: Decl[]}) {
@@ -120,9 +128,11 @@ export function Blocks(props: {blocks: Lens<BlockData[]>; decls: Decl[]}) {
       {props.blocks.map((block, index, blocks) => (
         <Block data={block} decls={props.decls} deleteBlock={() => blocks.remove(index)} key={index} />
       ))}
-      <a href="#" className="AddBlockButton" onClick={addBlock}>
-        <IoMdAdd />
-      </a>
+      <div className="BlockWrapper">
+        <a href="#" className="AddBlockButton" onClick={addBlock}>
+          <IoMdAdd />
+        </a>
+      </div>
     </div>
   );
 }
