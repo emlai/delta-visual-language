@@ -46,5 +46,5 @@ class _Lens<T> {
 }
 
 // https://stackoverflow.com/a/48362715/3425536
-export type Lens<T> = _Lens<T> & {[key in keyof T]: Lens<T[key]>};
+export type Lens<T> = _Lens<T> & (T extends any[] ? {} : {[key in keyof T]: Lens<T[key]>});
 export const Lens = _Lens as typeof _Lens & (<T>([current, set]: [T, (value: T) => void]) => Lens<T>);
