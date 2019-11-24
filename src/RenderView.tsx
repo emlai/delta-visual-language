@@ -16,31 +16,36 @@ export const RenderView = forwardRef((props: Props, ref: Ref<RenderViewRef>) => 
   const update = props.funcs.find(func => func.name === "update");
   const renderViewElement = useRef<HTMLDivElement>(null);
   const app = useRef<PIXI.Application>();
+  const rectangle = useRef<PIXI.Graphics>();
+
+  const move = (x: number, y: number) => {
+    rectangle.current!.x += x;
+    rectangle.current!.y += y;
+  };
 
   useEffect(() => {
     app.current = new PIXI.Application({antialias: true});
     renderViewElement.current!.appendChild(app.current.view);
     app.current.stop();
 
-    const rectangle = new PIXI.Graphics();
-    rectangle.beginFill(0xde3249);
-    rectangle.drawRect(50, 50, 100, 100);
-    rectangle.endFill();
-    app.current.stage.addChild(rectangle);
-
-    if (update) {
-      const move = (x: number, y: number) => {
-        rectangle.x += x;
-        rectangle.y += y;
-      };
-
-      app.current.ticker.add(async () => {
-        await interpret(update.body, props.funcs, {move});
-      });
-    }
+    rectangle.current = new PIXI.Graphics()
+      .beginFill(0xde3249)
+      .drawRect(50, 50, 100, 100)
+      .endFill();
+    app.current.stage.addChild(rectangle.current);
 
     return () => {
       app.current!.destroy(true);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!update) return;
+    const listener = () => interpret(update.body, props.funcs, {move});
+    app.current!.ticker.add(listener);
+
+    return () => {
+      app.current!.ticker.remove(listener);
     };
   }, [update]);
 
