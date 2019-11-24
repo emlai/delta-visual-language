@@ -9,6 +9,7 @@ import {Menu} from "./Menu";
 import {Function} from "./Function";
 import {Lens} from "./lens";
 import {useContextMenu} from "./context-menu";
+import {RenderView} from "./RenderView";
 
 const main = createBuiltinFunc("main", []);
 const prompt = createBuiltinFunc("prompt", []);
@@ -53,11 +54,14 @@ export function Editor() {
         </div>
       )}
 
-      <ContextMenuTrigger className="editableArea">
-        {funcs.map((func, index) => (
-          <Function func={func} decls={decls} deleteFunc={() => funcs.remove(index)} key={index} />
-        ))}
-      </ContextMenuTrigger>
+      <div className="Content">
+        <ContextMenuTrigger className="EditableArea">
+          {funcs.map((func, index) => (
+            <Function func={func} decls={decls} deleteFunc={() => funcs.remove(index)} key={index} />
+          ))}
+        </ContextMenuTrigger>
+        <RenderView />
+      </div>
     </div>
   );
 }

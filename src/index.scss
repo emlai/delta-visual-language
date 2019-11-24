@@ -87,7 +87,11 @@ input {
   height: -webkit-fill-available;
 }
 
-.editableArea {
+.Content {
+  display: flex;
+}
+
+.EditableArea {
   flex-grow: 1;
   display: flex;
   overflow: auto;
