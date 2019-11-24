@@ -4,7 +4,7 @@ import {IconContext} from "react-icons/lib";
 import {Editor} from "./Editor";
 
 ReactDOM.render(
-  <IconContext.Provider value={{size: "1.5em"}}>
+  <IconContext.Provider value={{size: "20px"}}>
     <Editor />
   </IconContext.Provider>,
   document.getElementById("root")

@@ -1,6 +1,6 @@
 import * as React from "react";
-import {createRef} from "react";
-import {IoMdPlay} from "react-icons/io";
+import {createRef, useState} from "react";
+import {MdPlayArrow as PlayIcon, MdPause as PauseIcon} from "react-icons/md";
 import {useLocalStorage} from "react-use";
 import * as is from "electron-is";
 import {TitleBar as WindowsTitleBar} from "electron-react-titlebar";
@@ -19,6 +19,7 @@ const nativeFuncs = [
 ];
 
 export function Editor() {
+  const [running, setRunning] = useState(false);
   const funcs = Lens(useLocalStorage<Func[]>("delta-project", []));
   const decls = funcs.current.concat(nativeFuncs);
   const renderView = createRef<RenderViewRef>();
@@ -28,9 +29,18 @@ export function Editor() {
   }
 
   function RunButton() {
+    const onClick = () => {
+      if (running) {
+        renderView.current!.stop();
+      } else {
+        renderView.current!.start();
+      }
+      setRunning(!running);
+    };
+
     return (
-      <div className="RunButton" onClick={() => renderView.current?.start()}>
-        <IoMdPlay />
+      <div className="RunButton" onClick={onClick}>
+        {running ? <PauseIcon /> : <PlayIcon />}
       </div>
     );
   }

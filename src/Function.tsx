@@ -1,5 +1,5 @@
 import * as React from "react";
-import {IoMdAdd} from "react-icons/io";
+import {MdAdd as AddIcon} from "react-icons/md";
 import {Decl, Func, isVarDecl} from "./interpreter";
 import {Blocks} from "./Block";
 import {EditableLabel} from "./EditableLabel";
@@ -32,7 +32,7 @@ export function Function(props: Props) {
             <EditableLabel value={param.name} key={index} />
           ))}
           <a href="#" className="AddParamButton" onClick={addParam}>
-            <IoMdAdd />
+            <AddIcon />
           </a>
         </ContextMenuTrigger>
         <Blocks blocks={func.body} decls={decls} />

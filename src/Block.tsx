@@ -6,7 +6,7 @@ import {Menu} from "./Menu";
 import {useContextMenu} from "./context-menu";
 import {ExprEditField} from "./ExprEditField";
 import {nextId} from "./utils";
-import {IoMdAdd} from "react-icons/io";
+import {MdAdd as AddIcon} from "react-icons/md";
 
 type Props = {
   data: Lens<BlockData>;
@@ -130,7 +130,7 @@ export function Blocks(props: {blocks: Lens<BlockData[]>; decls: Decl[]}) {
       ))}
       <div className="BlockWrapper">
         <a href="#" className="AddBlockButton" onClick={addBlock}>
-          <IoMdAdd />
+          <AddIcon />
         </a>
       </div>
     </div>
