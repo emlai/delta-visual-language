@@ -1,10 +1,10 @@
 import * as React from "react";
 import {BlockData, Decl, Expr, If, isFunc, VarDecl} from "./interpreter";
 import {Lens} from "./lens";
-import {Expression, ExprSlot} from "./Expression";
+import {Expression} from "./Expression";
 import {Menu} from "./Menu";
 import {useContextMenu} from "./context-menu";
-import {ExprEditField} from "./ExprEditField";
+import {ExprSlot} from "./ExprSlot";
 import {nextId} from "./utils";
 import {MdAdd as AddIcon} from "react-icons/md";
 
@@ -43,7 +43,7 @@ export function BlockContent(props: Props) {
 
       return (
         <ContextMenuTrigger className="Block">
-          <ExprEditField expr={props.data as Lens<Expr>} decls={props.decls} select={select} />
+          <ExprSlot expr={props.data as Lens<Expr>} decls={props.decls} select={select} />
         </ContextMenuTrigger>
       );
 

@@ -9,11 +9,10 @@ type Props = {
   expr: Lens<Expr>;
   decls: Decl[];
   select?: (name: string) => void;
-  cancel?: () => void;
 };
 
-export function ExprEditField(props: Props) {
-  function getFieldValue(expr: Expr) {
+export function ExprSlot(props: Props) {
+  function getInitialFieldValue(expr: Expr) {
     switch (expr.type) {
       case "empty":
         return "";
@@ -28,7 +27,8 @@ export function ExprEditField(props: Props) {
     }
   }
 
-  const value = Lens(useState(getFieldValue(props.expr.current)));
+  const initialValue = getInitialFieldValue(props.expr.current);
+  const value = Lens(useState(initialValue));
 
   const select =
     props.select ??
@@ -63,10 +63,12 @@ export function ExprEditField(props: Props) {
         select(value.current);
         break;
       case "Tab":
-        select(value.current);
+        if (completions.length === 0) {
+          select(value.current);
+        }
         break;
       case "Escape":
-        props.cancel?.();
+        select(initialValue);
         break;
       case "=":
         event.preventDefault();
@@ -76,7 +78,7 @@ export function ExprEditField(props: Props) {
   }
 
   return (
-    <div className="ExprEditField">
+    <div className="ExprSlot">
       <input
         value={value.current}
         onChange={event => value.set(event.target.value.trimLeft())}

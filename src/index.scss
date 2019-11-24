@@ -55,7 +55,7 @@ input {
 
 .ExprSlot {
   @extend input;
-  width: auto;
+  flex-grow: 1;
 
   input {
     padding-top: 0;
@@ -152,10 +152,6 @@ input {
   padding: 6px;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.3);
   border-top: 1px solid $block-inset-color;
-}
-
-.ExprEditField {
-  flex-grow: 1;
 }
 
 .MenuOverlay {
@@ -263,4 +259,8 @@ input {
       margin-left: 20px;
     }
   }
+}
+
+.RenderView {
+  position: relative;
 }
