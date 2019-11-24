@@ -3,6 +3,7 @@ import {useState} from "react";
 import {Decl, Expr, isFunc} from "./interpreter";
 import {Lens} from "./lens";
 import {Menu} from "./Menu";
+import {isNumber} from "./utils";
 
 type Props = {
   expr: Lens<Expr>;
@@ -12,10 +13,12 @@ type Props = {
 };
 
 export function ExprEditField(props: Props) {
-  function getName(expr: Expr) {
+  function getFieldValue(expr: Expr) {
     switch (expr.type) {
       case "empty":
         return "";
+      case "number":
+        return `${expr.value}`;
       case "var":
         return props.decls.find(decl => decl.id === expr.varId)!.name;
       case "call":
@@ -25,13 +28,18 @@ export function ExprEditField(props: Props) {
     }
   }
 
-  const value = Lens(useState(getName(props.expr.current)));
+  const value = Lens(useState(getFieldValue(props.expr.current)));
 
   const select =
     props.select ??
-    ((name: string) => {
-      const decl = props.decls.find(decl => decl.name === name);
-      if (!decl) throw Error(`Variable name "${name}" not found`);
+    ((value: string) => {
+      if (isNumber(value)) {
+        props.expr.set({type: "number", value: parseFloat(value)});
+        return;
+      }
+
+      const decl = props.decls.find(decl => decl.name === value);
+      if (!decl) throw Error(`Variable name "${value}" not found`);
 
       if (isFunc(decl)) {
         props.expr.set({type: "call", funcId: decl.id, args: decl.params.map(() => ({type: "empty"}))});
@@ -42,15 +50,19 @@ export function ExprEditField(props: Props) {
 
   const completions = value.current
     ? props.decls
-        .filter(decl => decl.name.includes(value.current))
-        .map(decl => ({value: decl.name, label: decl.name}))
-        .concat({value: "if", label: "if"})
+        .map(decl => decl.name)
+        .concat("if")
+        .filter(name => name.includes(value.current))
+        .map(name => ({value: name, label: name}))
     : [];
 
   function onKeyDown(event: React.KeyboardEvent) {
     switch (event.key) {
       case "Enter":
         event.preventDefault();
+        select(value.current);
+        break;
+      case "Tab":
         select(value.current);
         break;
       case "Escape":

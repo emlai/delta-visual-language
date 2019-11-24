@@ -15,13 +15,14 @@ export interface Func extends Decl {
 }
 
 export type Empty = {type: "empty"};
+export type Number = {type: "number"; value: number};
 export type Call = {type: "call"; funcId: string; args: Expr[]};
 export type Var = {type: "var"; varId: string};
 export type VarDecl = {type: "var-decl"; id: string; name: string; value: Expr};
 export type If = {type: "if"; condition: Expr; then: BlockData[]; else: BlockData[]};
 export type Compare = {type: "compare"; left: Expr; right: Expr};
 
-export type Expr = Empty | Var | Call | Compare;
+export type Expr = Empty | Number | Var | Call | Compare;
 export type BlockData = Empty | Call | VarDecl | If;
 
 export function isVarDecl(block: BlockData): block is VarDecl {
@@ -62,6 +63,10 @@ async function evaluate(
   switch (expr.type) {
     case "empty":
       return;
+    case "number":
+      return expr.value;
+    case "var":
+      return vars[expr.varId];
     case "call":
       const func = funcs.find(f => f.id === expr.funcId);
       if (!func) throw Error(`Function ID "${expr.funcId}" not found`);
@@ -77,13 +82,11 @@ async function evaluate(
           print: alert,
           ...nativeFuncs
         };
-        return allNativeFuncs[func.name](args);
+        return allNativeFuncs[func.name](...args);
       } else {
         const params = Object.fromEntries(func.params.map((param, index) => [param.id, args[index]]));
         return interpret(func.body, funcs, {...vars, ...params});
       }
-    case "var":
-      return vars[expr.varId];
     case "compare":
       const left = await evaluate(expr.left, funcs, nativeFuncs, vars);
       const right = await evaluate(expr.right, funcs, nativeFuncs, vars);

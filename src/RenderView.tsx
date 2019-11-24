@@ -28,8 +28,9 @@ export const RenderView = forwardRef((props: Props, ref: Ref<RenderViewRef>) => 
     app.current.stage.addChild(rectangle);
 
     if (update) {
-      const move = () => {
-        rectangle.x += 1;
+      const move = (x: number, y: number) => {
+        rectangle.x += x;
+        rectangle.y += y;
       };
 
       app.current.ticker.add(async () => {

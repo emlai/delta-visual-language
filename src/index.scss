@@ -27,6 +27,16 @@ span {
   user-select: none;
 }
 
+label {
+  display: flex;
+  align-items: center;
+}
+
+.LabelText {
+  color: $text-deemphasized-color-2;
+  margin-right: 4px;
+}
+
 input {
   width: 100%;
   background: $background-inset-color;
@@ -165,7 +175,8 @@ input {
   text-decoration: inherit;
   outline: none;
 
-  &:hover {
+  &:hover,
+  &:focus {
     color: inherit;
     background: $block-highlight-color;
   }

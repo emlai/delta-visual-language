@@ -15,7 +15,10 @@ import {RenderView, RenderViewRef} from "./RenderView";
 const nativeFuncs = [
   createNativeFunc("prompt", []),
   createNativeFunc("print", [{id: nextId(), name: ""}]),
-  createNativeFunc("move", [])
+  createNativeFunc("move", [
+    {id: nextId(), name: "x"},
+    {id: nextId(), name: "y"}
+  ])
 ];
 
 export function Editor() {
