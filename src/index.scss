@@ -58,8 +58,7 @@ input {
   flex-grow: 1;
 
   input {
-    padding-top: 0;
-    padding-bottom: 0;
+    padding: 0;
   }
 }
 
@@ -142,6 +141,10 @@ input {
 
 .BlockWrapper {
   background: $background-color;
+
+  &:not(:last-of-type) {
+    border-bottom: 1px solid $block-inset-color;
+  }
 }
 
 .Block {
@@ -151,7 +154,6 @@ input {
   background: $block-color;
   padding: 6px;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.3);
-  border-top: 1px solid $block-inset-color;
 }
 
 .MenuOverlay {
@@ -190,7 +192,6 @@ input {
   &:not(:hover) {
     background: $background-highlight-color;
     box-shadow: none;
-    border-top-color: transparent;
   }
 }
 

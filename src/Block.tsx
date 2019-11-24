@@ -28,7 +28,8 @@ export function BlockContent(props: Props) {
           case "if":
             props.data.set({type: "if", condition: {type: "empty"}, then: [], else: []});
             break;
-
+          case "":
+            break;
           default:
             const decl = props.decls.find(decl => decl.name === name);
 

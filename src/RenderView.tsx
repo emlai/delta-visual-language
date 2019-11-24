@@ -14,11 +14,12 @@ export type RenderViewRef = {
 
 export const RenderView = forwardRef((props: Props, ref: Ref<RenderViewRef>) => {
   const update = props.funcs.find(func => func.name === "update");
+  const renderViewElement = useRef<HTMLDivElement>(null);
   const app = useRef<PIXI.Application>();
 
   useEffect(() => {
     app.current = new PIXI.Application({antialias: true});
-    document.getElementsByClassName("RenderView")[0].appendChild(app.current.view);
+    renderViewElement.current!.appendChild(app.current.view);
     app.current.stop();
 
     const rectangle = new PIXI.Graphics();
@@ -52,5 +53,5 @@ export const RenderView = forwardRef((props: Props, ref: Ref<RenderViewRef>) => 
     }
   }));
 
-  return <div className="RenderView" />;
+  return <div className="RenderView" ref={renderViewElement} />;
 });
