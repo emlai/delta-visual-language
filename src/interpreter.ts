@@ -11,6 +11,7 @@ export interface Param extends Decl {}
 export interface Func extends Decl {
   params: Param[];
   body: BlockData[];
+  native?: true;
 }
 
 export type Empty = {type: "empty"};
@@ -31,23 +32,33 @@ export function isFunc(decl: Decl): decl is Func {
   return "body" in decl;
 }
 
-export async function interpret(blocks: BlockData[], funcs: Func[], vars: any = {}): Promise<unknown> {
+export async function interpret(
+  blocks: BlockData[],
+  funcs: Func[],
+  nativeFuncs: Record<string, Function> = {},
+  vars: Record<string, unknown> = {}
+): Promise<unknown> {
   return blocks.reduce<unknown>(async (prev, curr) => {
     await prev;
 
     switch (curr.type) {
       case "call":
-        return evaluate(curr, funcs, vars);
+        return evaluate(curr, funcs, nativeFuncs, vars);
       case "var-decl":
-        return (vars[curr.id] = await evaluate(curr.value, funcs, vars));
+        return (vars[curr.id] = await evaluate(curr.value, funcs, nativeFuncs, vars));
       case "if":
-        const condition = await evaluate(curr.condition, funcs, vars);
-        return interpret(condition ? curr.then : curr.else, funcs, vars);
+        const condition = await evaluate(curr.condition, funcs, nativeFuncs, vars);
+        return interpret(condition ? curr.then : curr.else, funcs, nativeFuncs, vars);
     }
   }, undefined);
 }
 
-async function evaluate(expr: Expr, funcs: Func[], vars: any): Promise<unknown> {
+async function evaluate(
+  expr: Expr,
+  funcs: Func[],
+  nativeFuncs: Record<string, Function>,
+  vars: Record<string, unknown>
+): Promise<unknown> {
   switch (expr.type) {
     case "empty":
       return;
@@ -57,23 +68,25 @@ async function evaluate(expr: Expr, funcs: Func[], vars: any): Promise<unknown> 
 
       const args: any[] = [];
       for (const arg of expr.args) {
-        args.push(await evaluate(arg, funcs, vars));
+        args.push(await evaluate(arg, funcs, nativeFuncs, vars));
       }
 
-      switch (func.name) {
-        case "prompt":
-          return prompt();
-        case "print":
-          return alert(args);
-        default:
-          const params = Object.fromEntries(func.params.map((param, index) => [param.id, args[index]]));
-          return interpret(func.body, funcs, {...vars, ...params});
+      if (func.native) {
+        const allNativeFuncs: Record<string, Function> = {
+          prompt,
+          print: alert,
+          ...nativeFuncs
+        };
+        return allNativeFuncs[func.name](args);
+      } else {
+        const params = Object.fromEntries(func.params.map((param, index) => [param.id, args[index]]));
+        return interpret(func.body, funcs, {...vars, ...params});
       }
     case "var":
       return vars[expr.varId];
     case "compare":
-      const left = await evaluate(expr.left, funcs, vars);
-      const right = await evaluate(expr.right, funcs, vars);
+      const left = await evaluate(expr.left, funcs, nativeFuncs, vars);
+      const right = await evaluate(expr.right, funcs, nativeFuncs, vars);
       return left === right;
   }
 }

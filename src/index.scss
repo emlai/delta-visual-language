@@ -137,11 +137,15 @@ input {
 .Block {
   height: $block-height;
   width: 200px;
-  display: block;
+  display: flex;
   background: $block-color;
   padding: 6px;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.3);
   border-top: 1px solid $block-inset-color;
+}
+
+.ExprEditField {
+  flex-grow: 1;
 }
 
 .MenuOverlay {

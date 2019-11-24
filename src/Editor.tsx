@@ -1,37 +1,35 @@
 import * as React from "react";
+import {createRef} from "react";
 import {IoMdPlay} from "react-icons/io";
 import {useLocalStorage} from "react-use";
 import * as is from "electron-is";
 import {TitleBar as WindowsTitleBar} from "electron-react-titlebar";
-import {interpret} from "./interpreter";
-import {createBuiltinFunc, createFunc, nextId} from "./utils";
+import {Func} from "./interpreter";
+import {createFunc, createNativeFunc, nextId} from "./utils";
 import {Menu} from "./Menu";
 import {Function} from "./Function";
 import {Lens} from "./lens";
 import {useContextMenu} from "./context-menu";
-import {RenderView} from "./RenderView";
+import {RenderView, RenderViewRef} from "./RenderView";
 
-const main = createBuiltinFunc("main", []);
-const prompt = createBuiltinFunc("prompt", []);
-const print = createBuiltinFunc("print", [{id: nextId(), name: ""}]);
+const nativeFuncs = [
+  createNativeFunc("prompt", []),
+  createNativeFunc("print", [{id: nextId(), name: ""}]),
+  createNativeFunc("move", [])
+];
 
 export function Editor() {
-  const funcs = Lens(useLocalStorage("delta-project", [main]));
-  const builtinFuncs = [prompt, print];
-  const decls = funcs.current.concat(builtinFuncs);
+  const funcs = Lens(useLocalStorage<Func[]>("delta-project", []));
+  const decls = funcs.current.concat(nativeFuncs);
+  const renderView = createRef<RenderViewRef>();
 
   function addFunction() {
     funcs.push(createFunc("", []));
   }
 
   function RunButton() {
-    const run = () => {
-      const main = funcs.current.find(func => func.name === "main")!;
-      return interpret(main.body, decls);
-    };
-
     return (
-      <div className="RunButton" onClick={run}>
+      <div className="RunButton" onClick={() => renderView.current?.start()}>
         <IoMdPlay />
       </div>
     );
@@ -60,7 +58,7 @@ export function Editor() {
             <Function func={func} decls={decls} deleteFunc={() => funcs.remove(index)} key={index} />
           ))}
         </ContextMenuTrigger>
-        <RenderView />
+        <RenderView funcs={decls} ref={renderView} />
       </div>
     </div>
   );

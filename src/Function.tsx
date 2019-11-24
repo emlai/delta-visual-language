@@ -31,11 +31,9 @@ export function Function(props: Props) {
           {func.params.map((param, index) => (
             <EditableLabel value={param.name} key={index} />
           ))}
-          {func.current.name !== "main" && (
-            <a href="#" className="AddParamButton" onClick={addParam}>
-              <IoMdAdd />
-            </a>
-          )}
+          <a href="#" className="AddParamButton" onClick={addParam}>
+            <IoMdAdd />
+          </a>
         </ContextMenuTrigger>
         <Blocks blocks={func.body} decls={decls} />
       </div>

@@ -1,20 +1,51 @@
 import * as React from "react";
-import {useEffect} from "react";
+import {forwardRef, Ref, useEffect, useImperativeHandle} from "react";
 import * as PIXI from "pixi.js";
+import {Func, interpret} from "./interpreter";
 
-export function RenderView() {
+type Props = {
+  funcs: Func[];
+};
+
+export type RenderViewRef = {
+  start: () => void;
+};
+
+export const RenderView = forwardRef((props: Props, ref: Ref<RenderViewRef>) => {
+  const update = props.funcs.find(func => func.name === "update");
+  let app: PIXI.Application;
+
   useEffect(() => {
-    const app = new PIXI.Application({antialias: true});
+    app = new PIXI.Application({antialias: true});
     document.getElementsByClassName("RenderView")[0].appendChild(app.view);
+    app.stop();
 
-    const graphics = new PIXI.Graphics();
+    const rectangle = new PIXI.Graphics();
+    rectangle.beginFill(0xde3249);
+    rectangle.drawRect(50, 50, 100, 100);
+    rectangle.endFill();
+    app.stage.addChild(rectangle);
 
-    graphics.beginFill(0xde3249);
-    graphics.drawRect(50, 50, 100, 100);
-    graphics.endFill();
+    if (update) {
+      const move = () => {
+        rectangle.x += 1;
+      };
 
-    app.stage.addChild(graphics);
-  }, []);
+      app.ticker.add(async () => {
+        await interpret(update.body, props.funcs, {move});
+      });
+    }
+
+    return () => {
+      app.destroy(true);
+    };
+  }, [update]);
+
+  useImperativeHandle(ref, () => ({
+    start: () => {
+      app.start();
+    }
+  }));
 
   return <div className="RenderView" />;
-}
+});
