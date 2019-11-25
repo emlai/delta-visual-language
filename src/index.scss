@@ -167,6 +167,11 @@ input {
 
 .MenuOverlay {
   position: absolute;
+  visibility: hidden;
+
+  .AutocompleteInput:focus-within & {
+    visibility: visible;
+  }
 }
 
 .Menu {

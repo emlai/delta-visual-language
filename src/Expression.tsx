@@ -87,7 +87,7 @@ function ExpressionContent(props: Props) {
     case "var":
     case "call":
       return (
-        <>
+        <div className="AutocompleteInput">
           <input
             value={value.current}
             onChange={event => value.set(event.target.value.trimLeft())}
@@ -97,7 +97,7 @@ function ExpressionContent(props: Props) {
           <div className="MenuOverlay">
             <Menu items={completions} select={select} />
           </div>
-        </>
+        </div>
       );
     case "compare":
       const compare = props.expr as Lens<Compare>;
