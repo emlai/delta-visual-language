@@ -1,7 +1,6 @@
 import * as React from "react";
-import {BlockData, Decl, Expr, If, isFunc, VarDecl} from "./interpreter";
+import {BlockData, Call, Decl, Expr, If, isFunc, VarDecl} from "./interpreter";
 import {Lens} from "./lens";
-import {Expression} from "./Expression";
 import {Menu} from "./Menu";
 import {useContextMenu} from "./context-menu";
 import {ExprSlot} from "./ExprSlot";
@@ -49,9 +48,25 @@ export function BlockContent(props: Props) {
       );
 
     case "call":
+      const func = props.decls.find(decl => decl.id === block.funcId);
+      if (!func) throw Error(`Function ID "${block.funcId}" not found`);
+      const params = isFunc(func) ? func.params : [];
+
       return (
         <ContextMenuTrigger className="Block">
-          <Expression expr={props.data as Lens<Expr>} decls={props.decls} />
+          <div className="Call">
+            <div>{func.name}</div>
+            {(props.data as Lens<Call>).args.map((arg, index) =>
+              params[index].name ? (
+                <label key={index}>
+                  <div className="LabelText">{params[index].name + ":"}</div>
+                  <ExprSlot expr={arg} decls={props.decls} />
+                </label>
+              ) : (
+                <ExprSlot expr={arg} decls={props.decls} key={index} />
+              )
+            )}
+          </div>
         </ContextMenuTrigger>
       );
 
