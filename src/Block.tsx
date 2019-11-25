@@ -13,7 +13,7 @@ type Props = {
   decls: Decl[];
 };
 
-export function BlockContent(props: Props) {
+function BlockContent(props: Props) {
   const block = props.data.current;
 
   const ContextMenuTrigger = useContextMenu(

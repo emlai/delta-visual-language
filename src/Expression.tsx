@@ -1,6 +1,6 @@
 import * as React from "react";
 import {useState} from "react";
-import {Decl, Expr, isFunc} from "./interpreter";
+import {Compare, Decl, Expr, isFunc} from "./interpreter";
 import {Lens} from "./lens";
 import {Menu} from "./Menu";
 import {isNumber} from "./utils";
@@ -11,7 +11,7 @@ type Props = {
   select?: (name: string) => void;
 };
 
-export function Expression(props: Props) {
+function ExpressionContent(props: Props) {
   function getInitialFieldValue(expr: Expr) {
     switch (expr.type) {
       case "empty":
@@ -81,17 +81,40 @@ export function Expression(props: Props) {
     }
   }
 
+  switch (props.expr.current.type) {
+    case "empty":
+    case "number":
+    case "var":
+    case "call":
+      return (
+        <>
+          <input
+            value={value.current}
+            onChange={event => value.set(event.target.value.trimLeft())}
+            onKeyDown={onKeyDown}
+            autoFocus={true}
+          />
+          <div className="MenuOverlay">
+            <Menu items={completions} select={select} />
+          </div>
+        </>
+      );
+    case "compare":
+      const compare = props.expr as Lens<Compare>;
+      return (
+        <div className="Compare">
+          <Expression expr={compare.left} decls={props.decls} />
+          {"="}
+          <Expression expr={compare.right} decls={props.decls} />
+        </div>
+      );
+  }
+}
+
+export function Expression(props: Props) {
   return (
     <div className="Expression">
-      <input
-        value={value.current}
-        onChange={event => value.set(event.target.value.trimLeft())}
-        onKeyDown={onKeyDown}
-        autoFocus={true}
-      />
-      <div className="MenuOverlay">
-        <Menu items={completions} select={select} />
-      </div>
+      <ExpressionContent {...props} />
     </div>
   );
 }
