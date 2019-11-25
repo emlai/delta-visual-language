@@ -24,9 +24,8 @@ export const RenderView = forwardRef((props: Props, ref: Ref<RenderViewRef>) => 
   };
 
   useEffect(() => {
-    app.current = new PIXI.Application({antialias: true});
+    app.current = new PIXI.Application({antialias: true, autoStart: false});
     renderViewElement.current!.appendChild(app.current.view);
-    app.current.stop();
 
     rectangle.current = new PIXI.Graphics()
       .beginFill(0xde3249)
