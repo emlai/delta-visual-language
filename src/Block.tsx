@@ -3,7 +3,7 @@ import {BlockData, Call, Decl, Expr, If, isFunc, VarDecl} from "./interpreter";
 import {Lens} from "./lens";
 import {Menu} from "./Menu";
 import {useContextMenu} from "./context-menu";
-import {ExprSlot} from "./ExprSlot";
+import {Expression} from "./Expression";
 import {nextId} from "./utils";
 import {MdAdd as AddIcon} from "react-icons/md";
 
@@ -43,7 +43,7 @@ export function BlockContent(props: Props) {
 
       return (
         <ContextMenuTrigger className="Block">
-          <ExprSlot expr={props.data as Lens<Expr>} decls={props.decls} select={select} />
+          <Expression expr={props.data as Lens<Expr>} decls={props.decls} select={select} />
         </ContextMenuTrigger>
       );
 
@@ -60,10 +60,10 @@ export function BlockContent(props: Props) {
               params[index].name ? (
                 <label key={index}>
                   <div className="LabelText">{params[index].name + ":"}</div>
-                  <ExprSlot expr={arg} decls={props.decls} />
+                  <Expression expr={arg} decls={props.decls} />
                 </label>
               ) : (
-                <ExprSlot expr={arg} decls={props.decls} key={index} />
+                <Expression expr={arg} decls={props.decls} key={index} />
               )
             )}
           </div>
@@ -75,7 +75,7 @@ export function BlockContent(props: Props) {
         <ContextMenuTrigger className="Block VarDecl">
           <div>{block.name}</div>
           <span>{"←"}</span>
-          <ExprSlot expr={(props.data as Lens<VarDecl>).value} decls={props.decls} />
+          <Expression expr={(props.data as Lens<VarDecl>).value} decls={props.decls} />
         </ContextMenuTrigger>
       );
 
@@ -99,7 +99,7 @@ export function BlockContent(props: Props) {
           <ContextMenuTrigger className="Block If">
             <div>{"if"}</div>
             <div className="Condition">
-              <ExprSlot expr={ifExpr.condition} decls={props.decls} />
+              <Expression expr={ifExpr.condition} decls={props.decls} />
             </div>
           </ContextMenuTrigger>
 

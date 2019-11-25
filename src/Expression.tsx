@@ -11,7 +11,7 @@ type Props = {
   select?: (name: string) => void;
 };
 
-export function ExprSlot(props: Props) {
+export function Expression(props: Props) {
   function getInitialFieldValue(expr: Expr) {
     switch (expr.type) {
       case "empty":
@@ -82,7 +82,7 @@ export function ExprSlot(props: Props) {
   }
 
   return (
-    <div className="ExprSlot">
+    <div className="Expression">
       <input
         value={value.current}
         onChange={event => value.set(event.target.value.trimLeft())}

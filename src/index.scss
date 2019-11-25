@@ -53,7 +53,7 @@ input {
   }
 }
 
-.ExprSlot {
+.Expression {
   @extend input;
   flex-grow: 1;
 
@@ -221,7 +221,7 @@ input {
 
 .Call,
 .VarDecl {
-  & > .ExprSlot {
+  & > .Expression {
     width: 100%;
   }
 }
