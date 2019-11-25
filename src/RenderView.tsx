@@ -13,40 +13,42 @@ export type RenderViewRef = {
 };
 
 export const RenderView = forwardRef((props: Props, ref: Ref<RenderViewRef>) => {
-  const update = props.funcs.find(func => func.name === "update");
+  const update = useRef<Func>();
+  update.current = props.funcs.find(func => func.name === "update");
   const renderViewElement = useRef<HTMLDivElement>(null);
   const app = useRef<PIXI.Application>();
-  const rectangle = useRef<PIXI.Graphics>();
-
-  const move = (x: number, y: number) => {
-    rectangle.current!.x += x;
-    rectangle.current!.y += y;
-  };
 
   useEffect(() => {
     app.current = new PIXI.Application({antialias: true, autoStart: false});
     renderViewElement.current!.appendChild(app.current.view);
 
-    rectangle.current = new PIXI.Graphics()
+    const rectangle = new PIXI.Graphics()
       .beginFill(0xde3249)
-      .drawRect(50, 50, 100, 100)
+      .drawRect(0, 0, 100, 100)
       .endFill();
-    app.current.stage.addChild(rectangle.current);
+    rectangle.pivot.set(50, 50);
+    app.current.stage.addChild(rectangle);
+
+    const nativeFuncs = {
+      move: (x: number, y: number) => {
+        rectangle.x += x;
+        rectangle.y += y;
+      },
+      rotate: (radians: number) => {
+        rectangle.rotation += radians;
+      }
+    };
+
+    app.current!.ticker.add(async () => {
+      if (update.current) {
+        await interpret(update.current.body, props.funcs, nativeFuncs);
+      }
+    });
 
     return () => {
       app.current!.destroy(true);
     };
   }, []);
-
-  useEffect(() => {
-    if (!update) return;
-    const listener = () => interpret(update.body, props.funcs, {move});
-    app.current!.ticker.add(listener);
-
-    return () => {
-      app.current!.ticker.remove(listener);
-    };
-  }, [update]);
 
   useImperativeHandle(ref, () => ({
     start: () => {

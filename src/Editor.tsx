@@ -18,7 +18,8 @@ const nativeFuncs = [
   createNativeFunc("move", [
     {id: nextId(), name: "x"},
     {id: nextId(), name: "y"}
-  ])
+  ]),
+  createNativeFunc("rotate", [{id: nextId(), name: "radians"}])
 ];
 
 export function Editor() {
