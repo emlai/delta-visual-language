@@ -12,15 +12,28 @@ export type RenderViewRef = {
   stop: () => void;
 };
 
+export type Callbacks = {
+  update: Func | undefined;
+  onKeys: Func[];
+};
+
 export const RenderView = forwardRef((props: Props, ref: Ref<RenderViewRef>) => {
-  const update = useRef<Func>();
-  update.current = props.funcs.find(func => func.name === "update");
   const renderViewElement = useRef<HTMLDivElement>(null);
   const app = useRef<PIXI.Application>();
+  const callbacks = useRef<Callbacks>();
+
+  callbacks.current = {
+    update: props.funcs.find(func => func.name === "update"),
+    onKeys: props.funcs.filter(func => func.name.startsWith("onKey"))
+  };
 
   useEffect(() => {
     app.current = new PIXI.Application({antialias: true, autoStart: false});
     renderViewElement.current!.appendChild(app.current.view);
+
+    const keys = new Set();
+    onkeydown = event => keys.add(event.code);
+    onkeyup = event => keys.delete(event.code);
 
     const rectangle = new PIXI.Graphics()
       .beginFill(0xde3249)
@@ -40,8 +53,17 @@ export const RenderView = forwardRef((props: Props, ref: Ref<RenderViewRef>) => 
     };
 
     app.current!.ticker.add(async () => {
-      if (update.current) {
-        await interpret(update.current.body, props.funcs, nativeFuncs);
+      const {update, onKeys} = callbacks.current!;
+
+      if (update) {
+        interpret(update.body, props.funcs, nativeFuncs);
+      }
+
+      for (const onKey of onKeys) {
+        const code = onKey.name.split(" ")[1];
+        if (keys.has(code)) {
+          interpret(onKey.body, props.funcs, nativeFuncs);
+        }
       }
     });
 
