@@ -97,13 +97,22 @@ input {
 }
 
 .Content {
-  display: flex;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: auto max-content;
+  overflow: hidden;
 }
 
 .EditableArea {
-  flex-grow: 1;
   display: flex;
-  overflow: auto;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  overflow: hidden;
+}
+
+.FunctionWrapper {
+  width: fit-content;
 }
 
 .Function {
