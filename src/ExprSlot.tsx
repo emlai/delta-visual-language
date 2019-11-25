@@ -72,7 +72,11 @@ export function ExprSlot(props: Props) {
         break;
       case "=":
         event.preventDefault();
-        props.expr.set({type: "compare", left: {type: "empty"}, right: {type: "empty"}});
+        if (props.select) {
+          props.select(value.current);
+        } else {
+          props.expr.set({type: "compare", left: {type: "empty"}, right: {type: "empty"}});
+        }
         break;
     }
   }
