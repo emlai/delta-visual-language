@@ -13,6 +13,7 @@ export type RenderViewRef = {
 };
 
 export type Callbacks = {
+  init: Func | undefined;
   update: Func | undefined;
   onKeys: Func[];
 };
@@ -23,6 +24,7 @@ export const RenderView = forwardRef((props: Props, ref: Ref<RenderViewRef>) => 
   const callbacks = useRef<Callbacks>();
 
   callbacks.current = {
+    init: props.funcs.find(func => func.name === "init"),
     update: props.funcs.find(func => func.name === "update"),
     onKeys: props.funcs.filter(func => func.name.startsWith("onKey"))
   };
@@ -52,17 +54,25 @@ export const RenderView = forwardRef((props: Props, ref: Ref<RenderViewRef>) => 
       }
     };
 
+    const vars = {};
+
+    const {init} = callbacks.current!;
+
+    if (init) {
+      interpret(init.body, props.funcs, nativeFuncs, vars);
+    }
+
     app.current!.ticker.add(async () => {
       const {update, onKeys} = callbacks.current!;
 
       if (update) {
-        interpret(update.body, props.funcs, nativeFuncs);
+        interpret(update.body, props.funcs, nativeFuncs, vars);
       }
 
       for (const onKey of onKeys) {
         const code = onKey.name.split(" ")[1];
         if (keys.has(code)) {
-          interpret(onKey.body, props.funcs, nativeFuncs);
+          interpret(onKey.body, props.funcs, nativeFuncs, vars);
         }
       }
     });

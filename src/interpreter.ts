@@ -36,8 +36,8 @@ export function isFunc(decl: Decl): decl is Func {
 export async function interpret(
   blocks: BlockData[],
   funcs: Func[],
-  nativeFuncs: Record<string, Function> = {},
-  vars: Record<string, unknown> = {}
+  nativeFuncs: Record<string, Function>,
+  vars: Record<string, unknown>
 ): Promise<unknown> {
   return blocks.reduce<unknown>(async (prev, curr) => {
     await prev;
@@ -85,7 +85,7 @@ async function evaluate(
         return allNativeFuncs[func.name](...args);
       } else {
         const params = Object.fromEntries(func.params.map((param, index) => [param.id, args[index]]));
-        return interpret(func.body, funcs, {...vars, ...params});
+        return interpret(func.body, funcs, nativeFuncs, {...vars, ...params});
       }
     case "compare":
       const left = await evaluate(expr.left, funcs, nativeFuncs, vars);

@@ -25,7 +25,7 @@ const nativeFuncs = [
 export function Editor() {
   const [running, setRunning] = useState(false);
   const funcs = Lens(useLocalStorage<Func[]>("delta-project", []));
-  const decls = funcs.current.concat(nativeFuncs);
+  const allFuncs = funcs.current.concat(nativeFuncs);
   const renderView = createRef<RenderViewRef>();
 
   function addFunction() {
@@ -69,10 +69,10 @@ export function Editor() {
       <div className="Content">
         <ContextMenuTrigger className="EditableArea">
           {funcs.map((func, index) => (
-            <Function func={func} decls={decls} deleteFunc={() => funcs.remove(index)} key={index} />
+            <Function func={func} allFuncs={allFuncs} deleteFunc={() => funcs.remove(index)} key={index} />
           ))}
         </ContextMenuTrigger>
-        <RenderView funcs={decls} ref={renderView} />
+        <RenderView funcs={allFuncs} ref={renderView} />
       </div>
     </div>
   );

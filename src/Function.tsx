@@ -1,6 +1,6 @@
 import * as React from "react";
 import {MdAdd as AddIcon} from "react-icons/md";
-import {Decl, Func, isVarDecl} from "./interpreter";
+import {Func, isVarDecl} from "./interpreter";
 import {Blocks} from "./Block";
 import {EditableLabel} from "./EditableLabel";
 import {Lens} from "./lens";
@@ -11,13 +11,14 @@ import {Menu} from "./Menu";
 type Props = {
   func: Lens<Func>;
   deleteFunc: () => void;
-  decls: Decl[];
+  allFuncs: Func[];
 };
 
 export function Function(props: Props) {
   const {func} = props;
   const addParam = () => func.params.push({id: nextId(), name: ""});
-  const decls = props.decls.concat(func.current.body.filter(isVarDecl)).concat(func.current.params);
+  const allVarDecls = props.allFuncs.flatMap(func => func.body.filter(isVarDecl));
+  const decls = [...props.allFuncs, ...allVarDecls, ...func.current.params];
 
   const ContextMenuTrigger = useContextMenu(
     <Menu items={[{value: "deleteFunc", label: <span>Delete function</span>}]} select={props.deleteFunc} />
