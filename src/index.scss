@@ -24,6 +24,7 @@ body {
   color: $text-color;
   font-family: Consolas, monospace;
   font-size: 12px;
+  overflow: hidden;
 }
 
 span {
@@ -102,7 +103,7 @@ input {
   height: 100vh;
   display: grid;
   grid-template-columns: auto max-content;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .EditableArea {
