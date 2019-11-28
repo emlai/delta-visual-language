@@ -90,12 +90,6 @@ input {
   }
 }
 
-.Editor {
-  display: flex;
-  flex-direction: column;
-  height: -webkit-fill-available;
-}
-
 .Content {
   height: 100vh;
   display: grid;
