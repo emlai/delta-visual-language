@@ -82,18 +82,6 @@ function BlockContent(props: Props) {
 
     case "if":
       const ifExpr = props.data as Lens<If>;
-      const x0 = 100;
-      const x1 = 15;
-      const x2 = 235;
-
-      const Lines = ({y0, y1}: {y0: number; y1: number}) => {
-        return (
-          <svg width={420} height={33}>
-            <path d={`M${x0},${y0} C${x0},${y1} ${x1},${y0} ${x1},${y1}`} />
-            <path d={`M${x0},${y0} C${x0},${y1} ${x2},${y0} ${x2},${y1}`} />
-          </svg>
-        );
-      };
 
       return (
         <>
@@ -105,23 +93,14 @@ function BlockContent(props: Props) {
           </ContextMenuTrigger>
 
           <div className="IfBody">
-            <div className="Lines">
-              <Lines y0={0} y1={33} />
-              <div className="Labels">
-                <span style={{transform: `translateX(${x1 + (x0 - x1) / 2 - 15}px)`}}>then</span>
-                <span style={{transform: `translateX(${x0 + (x2 - x0) / 2 - 15}px)`}}>else</span>
-              </div>
-            </div>
             <div className="ThenElse">
               <div className="Then">
                 <Blocks blocks={ifExpr.then} decls={props.decls} />
               </div>
+              <Label className="CompoundBlockLabel">else</Label>
               <div className="Else">
                 <Blocks blocks={ifExpr.else} decls={props.decls} />
               </div>
-            </div>
-            <div className="Lines">
-              <Lines y0={33} y1={0} />
             </div>
           </div>
         </>
