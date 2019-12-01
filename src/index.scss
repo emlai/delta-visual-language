@@ -9,6 +9,7 @@ $text-deemphasized-color: #555;
 $text-deemphasized-color-2: #8e8e8e;
 
 $block-height: 33px;
+$block-padding: 6px;
 
 * {
   box-sizing: border-box;
@@ -30,6 +31,10 @@ span {
 label {
   display: flex;
   align-items: center;
+}
+
+.Label {
+  margin-left: 4px;
 }
 
 .LabelText {
@@ -118,10 +123,14 @@ input {
 }
 
 .FunctionHeader {
+  @extend .BlockWrapper;
   display: flex;
   align-items: center;
-  padding: 7px;
+  padding: $block-padding;
   text-align: center;
+  border-radius: 4px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 .AddParamButton {
@@ -139,11 +148,10 @@ input {
 
 .Blocks {
   height: 100%;
-  background: $background-highlight-color;
 }
 
 .BlockWrapper {
-  background: $background-color;
+  background: $background-highlight-color;
 
   &:not(:last-of-type) {
     border-bottom: 1px solid $block-inset-color;
@@ -155,7 +163,7 @@ input {
   width: 200px;
   display: flex;
   background: $block-color;
-  padding: 6px;
+  padding: $block-padding;
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.3);
 }
 
@@ -215,7 +223,7 @@ input {
 .Call > * + *,
 .VarDecl > * + *,
 .If > * + * {
-  margin-left: 7px;
+  margin-left: 8px;
 }
 
 .Call,

@@ -2,6 +2,7 @@ import * as React from "react";
 import {useState} from "react";
 import {TextField} from "./TextField";
 import {Lens} from "./lens";
+import {Label} from "./Label";
 
 type Props = {
   value: Lens<string>;
@@ -18,6 +19,6 @@ export function EditableLabel(props: Props) {
   if (editing) {
     return <TextField value={props.value.current} onChange={onChange} />;
   } else {
-    return <div onClick={() => setEditing(true)}>{props.value.current}</div>;
+    return <Label onClick={() => setEditing(true)}>{props.value.current}</Label>;
   }
 }

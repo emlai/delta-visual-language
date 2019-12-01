@@ -7,6 +7,7 @@ import {Lens} from "./lens";
 import {nextId} from "./utils";
 import {useContextMenu} from "./context-menu";
 import {Menu} from "./Menu";
+import {Label} from "./Label";
 
 type Props = {
   func: Lens<Func>;

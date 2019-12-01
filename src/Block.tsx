@@ -6,6 +6,7 @@ import {useContextMenu} from "./context-menu";
 import {Expression} from "./Expression";
 import {nextId} from "./utils";
 import {MdAdd as AddIcon} from "react-icons/md";
+import {Label} from "./Label";
 
 type Props = {
   data: Lens<BlockData>;
@@ -55,7 +56,7 @@ function BlockContent(props: Props) {
       return (
         <ContextMenuTrigger className="Block">
           <div className="Call">
-            <div>{func.name}</div>
+            <Label>{func.name}</Label>
             {(props.data as Lens<Call>).args.map((arg, index) =>
               params[index].name ? (
                 <label key={index}>
@@ -97,7 +98,7 @@ function BlockContent(props: Props) {
       return (
         <>
           <ContextMenuTrigger className="Block If">
-            <div>{"if"}</div>
+            <Label>if</Label>
             <div className="Condition">
               <Expression expr={ifExpr.condition} decls={props.decls} />
             </div>
